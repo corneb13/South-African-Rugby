@@ -8,14 +8,17 @@ import time
 
 FIXTURE_URL = "https://springboks.rugby/match-centre/fixtures"
 
-def create_ics_event(summary, start_dt, end_dt, location, description, uid_id):
+def create_ics_event(summary, start_dt_utc, end_dt_utc, location, description, uid_id):
+    # Using 'Z' format enforces standard UTC, allowing subscriber calendar apps 
+    # to automatically convert event times to their local device timezone.
     fmt = "%Y%m%dT%H%M%SZ"
+    dtstamp = datetime.now(timezone.utc).strftime(fmt)
     return (
         "BEGIN:VEVENT\n"
         f"UID:sarugby-match-{uid_id}@sarugby\n"
-        f"DTSTAMP:{datetime.now(timezone.utc).strftime(fmt)}\n"
-        f"DTSTART:{start_dt.strftime(fmt)}\n"
-        f"DTEND:{end_dt.strftime(fmt)}\n"
+        f"DTSTAMP:{dtstamp}\n"
+        f"DTSTART:{start_dt_utc.strftime(fmt)}\n"
+        f"DTEND:{end_dt_utc.strftime(fmt)}\n"
         f"SUMMARY:{summary}\n"
         f"LOCATION:{location}\n"
         f"DESCRIPTION:{description}\n"
@@ -26,6 +29,34 @@ def create_ics_event(summary, start_dt, end_dt, location, description, uid_id):
 def sanitize_filename(name):
     clean = re.sub(r'[^a-zA-Z0-9\s]', '', name)
     return clean.strip().replace(' ', '_').lower() + '.ics'
+
+def format_team(team_name):
+    flags = {
+        "south africa": "🇿🇦", "springboks": "🇿🇦",
+        "new zealand": "🇳🇿", "all blacks": "🇳🇿",
+        "australia": "🇦🇺", "wallabies": "🇦🇺",
+        "argentina": "🇦🇷", "los pumas": "🇦🇷",
+        "england": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "ireland": "🇮🇪",
+        "wales": "🏴󠁧󠁢󠁷󠁬󠁳󠁿", "scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+        "france": "🇫🇷", "italy": "🇮🇹",
+        "fiji": "🇫🇯", "samoa": "🇼🇸", "tonga": "🇹🇴",
+        "japan": "🇯🇵", "georgia": "🇬🇪", "uruguay": "🇺🇾",
+        "portugal": "🇵🇹", "spain": "🇪🇸", "usa": "🇺🇸",
+        "canada": "🇨🇦", "namibia": "🇳🇦", "romania": "🇷🇴",
+        "chile": "🇨🇱", "british & irish lions": "🦁",
+        "zimbabwe": "🇿🇼", "kenya": "🇰🇪"
+    }
+    
+    lower_team = team_name.lower().strip()
+    
+    if lower_team in flags:
+        return f"{flags[lower_team]} {team_name} 🏉"
+        
+    for key, flag in flags.items():
+        if lower_team.startswith(key):
+            return f"{flag} {team_name} 🏉"
+            
+    return None
 
 def fetch_and_build_calendar():
     print("Starting headless browser...")
@@ -111,6 +142,7 @@ def fetch_and_build_calendar():
                 comp_info = "SA Rugby Fixture" 
                 
                 comp_keywords = ["Cup", "Division", "Shield", "Championship", "League", "Test", "Tour", "Series", "International"]
+                intl_keywords = ["Test", "Tour", "Series", "International", "Championship", "World Cup"]
                 
                 for offset in range(3, 8):
                     if idx + offset < len(lines):
@@ -120,27 +152,38 @@ def fetch_and_build_calendar():
                         elif any(k in check_line for k in comp_keywords):
                             comp_info = check_line
 
+                # Convert local SAST time (UTC+2) to standard UTC
                 sast_dt = datetime(current_date[0], current_date[1], current_date[2], hour, minute)
-                utc_start = sast_dt - timedelta(hours=2)
-                utc_start = utc_start.replace(tzinfo=timezone.utc)
+                utc_start = (sast_dt - timedelta(hours=2)).replace(tzinfo=timezone.utc)
                 utc_end = utc_start + timedelta(hours=2)
 
-                summary = f"🏉 {home_team} vs {away_team}"
+                # Emoji formatting for international fixtures
+                display_home = home_team
+                display_away = away_team
+                is_international = any(k in comp_info for k in intl_keywords)
                 
-                # ---- UPDATED DESCRIPTION SECTION ----
+                if is_international:
+                    h_fmt = format_team(home_team)
+                    a_fmt = format_team(away_team)
+                    
+                    if h_fmt or a_fmt:
+                        display_home = h_fmt if h_fmt else f"🏳️ {home_team} 🏉"
+                        display_away = a_fmt if a_fmt else f"🏳️ {away_team} 🏉"
+
+                summary = f"{display_home} vs {display_away}"
+                
                 description = (
                     f"Tournament: {comp_info}\\n"
-                    f"Match: {home_team} v {away_team}\\n\\n"
+                    f"Match: {display_home} v {display_away}\\n\\n"
                     f"Need to update subscriptions?\\n"
                     f"Check GitHub: https://github.com/corneb13/South-African-Rugby/actions"
                 )
-                # -------------------------------------
 
                 match_count += 1
                 event_str = create_ics_event(
                     summary=summary,
-                    start_dt=utc_start,
-                    end_dt=utc_end,
+                    start_dt_utc=utc_start,
+                    end_dt_utc=utc_end,
                     location=venue_info,
                     description=description,
                     uid_id=f"{current_date[0]}{current_date[1]:02d}{current_date[2]:02d}-{match_count}"
