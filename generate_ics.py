@@ -1,7 +1,10 @@
 from datetime import datetime, timezone, timedelta
 import re
-import requests
 from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+import time
 
 FIXTURE_URL = "https://springboks.rugby/match-centre/fixtures"
 
@@ -21,41 +24,62 @@ def create_ics_event(summary, start_dt, end_dt, location, description, uid_id):
     )
 
 def fetch_and_build_calendar():
-    headers = {
-        "User-Agent": (
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/120.0.0.0 Safari/537.36"
-        )
-    }
+    print("Starting headless browser...")
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--window-size=1920,1080")
+    
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.get(FIXTURE_URL)
+    
+    print("Scrolling and expanding page to load all future fixtures...")
+    last_height = driver.execute_script("return document.body.scrollHeight")
+    
+    for _ in range(12): 
+        # Scroll to the bottom to trigger infinite scroll
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(2)
+        
+        # Look for any "Load More" buttons and click them
+        try:
+            buttons = driver.find_elements(By.XPATH, "//button | //a")
+            for btn in buttons:
+                text = btn.text.strip().lower()
+                if "load more" in text or "show more" in text:
+                    driver.execute_script("arguments[0].scrollIntoView();", btn)
+                    time.sleep(1)
+                    driver.execute_script("arguments[0].click();", btn)
+                    time.sleep(2)
+        except Exception:
+            pass
 
-    response = requests.get(FIXTURE_URL, headers=headers)
-    if response.status_code != 200:
-        print(f"Failed to fetch site, status code: {response.status_code}")
-        return
+        new_height = driver.execute_script("return document.body.scrollHeight")
+        if new_height == last_height:
+            break
+        last_height = new_height
 
-    soup = BeautifulSoup(response.text, "html.parser")
+    print("Page fully loaded. Extracting HTML...")
+    html = driver.page_source
+    driver.quit()
+
+    soup = BeautifulSoup(html, "html.parser")
     events = []
-
-    # Find match containers or text blocks on the page
-    # SA Rugby renders dates followed by match rows
+    
     current_date = None
     match_count = 0
 
-    # Extract all text elements to iterate through fixtures sequentially
     page_text = soup.get_text(separator="\n")
     lines = [line.strip() for line in page_text.splitlines() if line.strip()]
 
-    # Pattern match for dates like "Friday, 21 August 2026"
     date_pattern = re.compile(r'^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),\s+(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$')
-    # Pattern match for kick-off times like "04:00" or "17:05"
     time_pattern = re.compile(r'^(\d{2}):(\d{2})$')
 
     idx = 0
     while idx < len(lines):
         line = lines[idx]
         
-        # Check for date headers
         date_match = date_pattern.match(line)
         if date_match:
             day_num = int(date_match.group(2))
@@ -69,35 +93,29 @@ def fetch_and_build_calendar():
             idx += 1
             continue
 
-        # Look for time indicators starting a fixture entry
         time_match = time_pattern.match(line)
         if time_match and current_date:
             hour = int(time_match.group(1))
             minute = int(time_match.group(2))
 
-            # Attempt to gather match details following the time
-            # Structure: Home Team, Away Team, Venue/Competition
             try:
                 home_team = lines[idx + 1] if idx + 1 < len(lines) else "TBD"
                 away_team = lines[idx + 3] if idx + 3 < len(lines) else "TBD"
                 
-                # Filter out system duplicate labels
                 if home_team == lines[idx + 2] if idx + 2 < len(lines) else "":
                     away_team = lines[idx + 4] if idx + 4 < len(lines) else away_team
 
                 venue_info = "South Africa"
                 comp_info = "SA Rugby Fixture"
                 
-                # Search next few lines for venue & competition name
                 for offset in range(3, 8):
                     if idx + offset < len(lines):
                         check_line = lines[idx + offset]
-                        if "," in check_line:  # Venues usually contain commas e.g. "Stadium, City"
+                        if "," in check_line:
                             venue_info = check_line
-                        elif "Cup" in check_line or "Division" in check_line or "Shield" in check_line or "Championship" in check_line:
+                        elif any(k in check_line for k in ["Cup", "Division", "Shield", "Championship", "League"]):
                             comp_info = check_line
 
-                # Convert SAST (UTC+2) to UTC for standard calendar specs
                 sast_dt = datetime(current_date[0], current_date[1], current_date[2], hour, minute)
                 utc_start = sast_dt - timedelta(hours=2)
                 utc_start = utc_start.replace(tzinfo=timezone.utc)
@@ -122,15 +140,6 @@ def fetch_and_build_calendar():
 
         idx += 1
 
-    # Fallback to direct HTML block parsing if text stream yields empty
-    if not events:
-        for card in soup.find_all(["div", "article", "tr"]):
-            text = card.get_text()
-            if " vs " in text or " V " in text or "Not Started" in text:
-                # Basic fallback entry generator
-                pass
-
-    # Build full ICS content
     ics_content = (
         "BEGIN:VCALENDAR\n"
         "VERSION:2.0\n"
