@@ -9,15 +9,15 @@ import time
 FIXTURE_URL = "https://springboks.rugby/match-centre/fixtures"
 
 def create_ics_event(summary, start_dt, end_dt, location, description, uid_id):
-    # Removed the trailing 'Z' and forced the local South African Timezone ID
+    # FLOATING TIME: No 'Z' or TZID. This forces the calendar to lock to the exact hour and minute scraped.
     fmt = "%Y%m%dT%H%M%S"
     dtstamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     return (
         "BEGIN:VEVENT\n"
         f"UID:sarugby-springbok-{uid_id}@sarugby\n"
         f"DTSTAMP:{dtstamp}\n"
-        f"DTSTART;TZID=Africa/Johannesburg:{start_dt.strftime(fmt)}\n"
-        f"DTEND;TZID=Africa/Johannesburg:{end_dt.strftime(fmt)}\n"
+        f"DTSTART:{start_dt.strftime(fmt)}\n"
+        f"DTEND:{end_dt.strftime(fmt)}\n"
         f"SUMMARY:{summary}\n"
         f"LOCATION:{location}\n"
         f"DESCRIPTION:{description}\n"
@@ -127,8 +127,10 @@ def fetch_and_build_calendar():
             minute = int(time_match.group(2))
 
             try:
-                # SMART PARSER: Gather all info blocks safely without strict line indexing
                 chunk = []
+                # Ignore hidden status tags and junk text between team names
+                ignore_phrases = ["v", "not started", "upcoming", "live", "tbc", "ft", "full time", "match centre"]
+                
                 for offset in range(1, 15):
                     if idx + offset >= len(lines):
                         break
@@ -136,15 +138,12 @@ def fetch_and_build_calendar():
                     if not val:
                         continue
                     
-                    # Stop if we hit the next time, date, or month grouping
                     if time_pattern.match(val) or date_pattern.match(val) or month_header_pattern.match(val):
                         break
                         
-                    # Explicitly ignore the solitary "V" or "v" between teams
-                    if val.lower() != 'v':
+                    if val.lower() not in ignore_phrases:
                         chunk.append(val)
                 
-                # Assign variables cleanly based on the chunk sequence
                 home_team = chunk[0] if len(chunk) > 0 else "TBD"
                 away_team = chunk[1] if len(chunk) > 1 else "TBD"
                 venue_info = chunk[2] if len(chunk) > 2 else "South Africa"
@@ -156,9 +155,9 @@ def fetch_and_build_calendar():
 
                 if is_sa_team and not is_excluded:
                     
-                    # Native SAST time application (no UTC conversion)
-                    sast_start = datetime(current_date[0], current_date[1], current_date[2], hour, minute)
-                    sast_end = sast_start + timedelta(hours=2)
+                    # Exactly as scraped. No adjustments.
+                    local_start = datetime(current_date[0], current_date[1], current_date[2], hour, minute)
+                    local_end = local_start + timedelta(hours=2)
 
                     display_home = format_team(home_team)
                     display_away = format_team(away_team)
@@ -175,8 +174,8 @@ def fetch_and_build_calendar():
                     match_count += 1
                     event_str = create_ics_event(
                         summary=summary,
-                        start_dt=sast_start,
-                        end_dt=sast_end,
+                        start_dt=local_start,
+                        end_dt=local_end,
                         location=venue_info,
                         description=description,
                         uid_id=f"{current_date[0]}{current_date[1]:02d}{current_date[2]:02d}-{match_count}"
