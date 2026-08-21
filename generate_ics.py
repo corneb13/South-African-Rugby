@@ -3,6 +3,7 @@ import re
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 import time
 
 FIXTURE_URL = "https://springboks.rugby/match-centre/fixtures"
@@ -50,7 +51,7 @@ def format_team(team_name):
     return f"🏳️ {team_name} 🏉"
 
 def fetch_and_build_calendar():
-    print("Starting browser session...")
+    print("Starting headless browser with SAST timezone override...")
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
@@ -58,90 +59,106 @@ def fetch_and_build_calendar():
     chrome_options.add_argument("--window-size=1920,1080")
     
     driver = webdriver.Chrome(options=chrome_options)
+    
+    # Force Chrome to run in SAST so the website renders local kickoff times
+    driver.execute_cdp_cmd("Emulation.setTimezoneOverride", {"timezoneId": "Africa/Johannesburg"})
+    
     driver.get(FIXTURE_URL)
     time.sleep(3)
     
-    print("Scrolling to load complete fixture list...")
-    for _ in range(6): 
+    print("Scrolling and clicking 'Load More' to capture all fixtures...")
+    for _ in range(10): 
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(1.5)
+        try:
+            buttons = driver.find_elements(By.XPATH, "//button | //a")
+            for btn in buttons:
+                text = btn.text.strip().lower()
+                if "load more" in text or "show more" in text:
+                    driver.execute_script("arguments[0].click();", btn)
+                    time.sleep(1.5)
+        except Exception:
+            pass
 
     soup = BeautifulSoup(driver.page_source, "html.parser")
     driver.quit()
 
-    # Extract page text split cleanly by lines
     raw_lines = [line.strip() for line in soup.get_text(separator="\n").splitlines() if line.strip()]
-    
-    # Deduplicate consecutive identical lines to prevent event multiplying
     lines = []
     for l in raw_lines:
         if not lines or lines[-1] != l:
             lines.append(l)
 
     events = []
+    current_year = datetime.now().year
     current_date = None
     seen_fixtures = set()
 
-    date_pattern = re.compile(r'^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),\s+(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$')
-    time_pattern = re.compile(r'^(\d{2}):(\d{2})$')
+    # Regex patterns for month headers, dates, and match times
+    month_year_pattern = re.compile(r'^(JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER)\s+(\d{4})$', re.IGNORECASE)
+    date_pattern = re.compile(r'^(?:(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*[\s,]+)?(\d{1,2})\s+([A-Za-z]+)(?:[\s,]+(\d{4}))?$', re.IGNORECASE)
+    time_pattern = re.compile(r'^(\d{1,2})[:h](\d{2})$')
 
-    known_teams = [
-        "springboks", "south africa", "new zealand", "all blacks", "australia", "wallabies",
-        "argentina", "los pumas", "england", "ireland", "wales", "scotland", "france", "italy",
-        "fiji", "samoa", "tonga", "japan", "georgia", "uruguay", "portugal", "spain", "usa",
-        "canada", "namibia", "romania", "chile", "barbarians"
-    ]
+    known_teams_map = {
+        "springboks": "Springboks", "springbok": "Springboks", "south africa": "South Africa",
+        "all blacks": "New Zealand", "new zealand": "New Zealand",
+        "wallabies": "Australia", "australia": "Australia",
+        "los pumas": "Argentina", "argentina": "Argentina",
+        "england": "England", "ireland": "Ireland", "wales": "Wales",
+        "scotland": "Scotland", "france": "France", "italy": "Italy",
+        "fiji": "Fiji", "samoa": "Samoa", "tonga": "Tonga",
+        "japan": "Japan", "georgia": "Georgia", "uruguay": "Uruguay",
+        "portugal": "Portugal", "spain": "Spain", "usa": "USA",
+        "canada": "Canada", "namibia": "Namibia", "romania": "Romania",
+        "chile": "Chile", "barbarians": "Barbarians"
+    }
 
     idx = 0
     while idx < len(lines):
         line = lines[idx]
         
+        # Check for Month Year header (e.g., AUGUST 2026)
+        my_match = month_year_pattern.match(line)
+        if my_match:
+            current_year = int(my_match.group(2))
+            idx += 1
+            continue
+
+        # Check for Date line (e.g., Sat 22 Aug or 22 August 2026)
         date_match = date_pattern.match(line)
-        if date_match:
-            day_num = int(date_match.group(2))
-            month_str = date_match.group(3)
-            year_num = int(date_match.group(4))
+        if date_match and not my_match:
+            day_num = int(date_match.group(1))
+            month_str = date_match.group(2)
+            year_num = int(date_match.group(3)) if date_match.group(3) else current_year
             try:
-                month_num = datetime.strptime(month_str, "%B").month
+                month_num = datetime.strptime(month_str[:3], "%b").month
                 current_date = (year_num, month_num, day_num)
             except ValueError:
                 pass
             idx += 1
             continue
 
+        # Check for Time line (e.g., 17:10)
         time_match = time_pattern.match(line)
         if time_match and current_date:
             hour = int(time_match.group(1))
             minute = int(time_match.group(2))
 
-            # Look forward up to 15 lines for teams and match context
-            chunk = lines[idx+1 : idx+16]
-            
+            chunk = lines[idx+1 : idx+20]
             found_teams = []
+            
             for item in chunk:
                 item_lower = item.lower()
-                for kt in known_teams:
-                    if kt in item_lower:
-                        # Normalize common names
-                        clean_name = item
-                        if "springbok" in item_lower or "south africa" in item_lower:
-                            clean_name = "Springboks"
-                        elif "new zealand" in item_lower or "all black" in item_lower:
-                            clean_name = "New Zealand"
-                        elif "australia" in item_lower or "wallab" in item_lower:
-                            clean_name = "Australia"
-                        elif "argentina" in item_lower or "pumas" in item_lower:
-                            clean_name = "Argentina"
-                            
-                        if clean_name not in found_teams:
-                            found_teams.append(clean_name)
+                for key, canonical in known_teams_map.items():
+                    if key in item_lower and canonical not in found_teams:
+                        found_teams.append(canonical)
+                        break
 
-            if "Springboks" in found_teams or any(kt in " ".join(found_teams).lower() for kt in ["south africa", "springbok"]):
+            if "Springboks" in found_teams or "South Africa" in found_teams:
                 home_team = found_teams[0] if len(found_teams) > 0 else "Springboks"
-                away_team = found_teams[1] if len(found_teams) > 1 else ("Opponent" if home_team == "Springboks" else "Springboks")
+                away_team = found_teams[1] if len(found_teams) > 1 else ("Opponent" if home_team in ["Springboks", "South Africa"] else "Springboks")
                 
-                # Prevent duplicate entries for the exact same match slot
-                fixture_key = f"{current_date}-{hour}:{minute}-{home_team}-{away_team}"
+                fixture_key = f"{current_date[0]}-{current_date[1]}-{current_date[2]}-{hour}:{minute}-{home_team}-{away_team}"
                 if fixture_key not in seen_fixtures:
                     seen_fixtures.add(fixture_key)
 
