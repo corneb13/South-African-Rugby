@@ -9,15 +9,14 @@ import time
 FIXTURE_URL = "https://springboks.rugby/match-centre/fixtures"
 
 def create_ics_event(summary, start_dt, end_dt, location, description, uid_id):
-    # FLOATING TIME: No 'Z' or TZID. This forces the calendar to lock to the exact hour and minute scraped.
     fmt = "%Y%m%dT%H%M%S"
     dtstamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     return (
         "BEGIN:VEVENT\n"
         f"UID:sarugby-springbok-{uid_id}@sarugby\n"
         f"DTSTAMP:{dtstamp}\n"
-        f"DTSTART:{start_dt.strftime(fmt)}\n"
-        f"DTEND:{end_dt.strftime(fmt)}\n"
+        f"DTSTART;TZID=Africa/Johannesburg:{start_dt.strftime(fmt)}\n"
+        f"DTEND;TZID=Africa/Johannesburg:{end_dt.strftime(fmt)}\n"
         f"SUMMARY:{summary}\n"
         f"LOCATION:{location}\n"
         f"DESCRIPTION:{description}\n"
@@ -43,7 +42,6 @@ def format_team(team_name):
     }
     
     lower_team = team_name.lower().strip()
-    
     if lower_team in flags:
         return f"{flags[lower_team]} {team_name} 🏉"
         
@@ -104,6 +102,13 @@ def fetch_and_build_calendar():
     time_pattern = re.compile(r'^(\d{2}):(\d{2})$')
     month_header_pattern = re.compile(r'^(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}$', re.IGNORECASE)
 
+    known_teams = [
+        "south africa", "springboks", "new zealand", "all blacks", "australia", "wallabies",
+        "argentina", "los pumas", "england", "ireland", "wales", "scotland", "france", "italy",
+        "fiji", "samoa", "tonga", "japan", "georgia", "uruguay", "portugal", "spain", "usa",
+        "canada", "namibia", "romania", "chile", "zimbabwe", "kenya", "barbarians"
+    ]
+
     idx = 0
     while idx < len(lines):
         line = lines[idx]
@@ -127,35 +132,45 @@ def fetch_and_build_calendar():
             minute = int(time_match.group(2))
 
             try:
-                chunk = []
-                # Ignore hidden status tags and junk text between team names
-                ignore_phrases = ["v", "not started", "upcoming", "live", "tbc", "ft", "full time", "match centre"]
-                
-                for offset in range(1, 15):
+                match_lines = []
+                for offset in range(1, 20):
                     if idx + offset >= len(lines):
                         break
                     val = lines[idx + offset].strip()
                     if not val:
                         continue
-                    
                     if time_pattern.match(val) or date_pattern.match(val) or month_header_pattern.match(val):
                         break
-                        
-                    if val.lower() not in ignore_phrases:
-                        chunk.append(val)
+                    match_lines.append(val)
+
+                # Filter out match status tags and noise
+                filtered = [
+                    l for l in match_lines 
+                    if l.lower() not in ["v", "vs", "tbc", "ft", "full time", "match centre"]
+                    and not any(k in l.lower() for k in ["not started", "upcoming", "live"])
+                ]
+
+                # Identify teams from filtered elements
+                found_teams = []
+                other_info = []
                 
-                home_team = chunk[0] if len(chunk) > 0 else "TBD"
-                away_team = chunk[1] if len(chunk) > 1 else "TBD"
-                venue_info = chunk[2] if len(chunk) > 2 else "South Africa"
-                comp_info = chunk[3] if len(chunk) > 3 else "International Fixture"
+                for item in filtered:
+                    if any(kt in item.lower() for kt in known_teams):
+                        found_teams.append(item)
+                    else:
+                        other_info.append(item)
+
+                home_team = found_teams[0] if len(found_teams) > 0 else (filtered[0] if len(filtered) > 0 else "TBD")
+                away_team = found_teams[1] if len(found_teams) > 1 else (filtered[1] if len(filtered) > 1 else "TBD")
+                
+                venue_info = other_info[0] if len(other_info) > 0 else "South Africa"
+                comp_info = other_info[1] if len(other_info) > 1 else "International Fixture"
 
                 teams_text = f"{home_team.lower()} {away_team.lower()}"
                 is_sa_team = "south africa" in teams_text or "springbok" in teams_text
                 is_excluded = any(ex in f"{teams_text} {comp_info.lower()}" for ex in ["women", "u20", "u21", "under 20", "under 21", "junior", "women's"])
 
                 if is_sa_team and not is_excluded:
-                    
-                    # Exactly as scraped. No adjustments.
                     local_start = datetime(current_date[0], current_date[1], current_date[2], hour, minute)
                     local_end = local_start + timedelta(hours=2)
 
@@ -195,6 +210,16 @@ def fetch_and_build_calendar():
         "METHOD:PUBLISH\n"
         "X-WR-CALNAME:Springboks Fixtures\n"
         "X-WR-TIMEZONE:Africa/Johannesburg\n"
+        "BEGIN:VTIMEZONE\n"
+        "TZID:Africa/Johannesburg\n"
+        "X-LIC-LOCATION:Africa/Johannesburg\n"
+        "BEGIN:STANDARD\n"
+        "TZOFFSETFROM:+0200\n"
+        "TZOFFSETTO:+0200\n"
+        "TZNAME:SAST\n"
+        "DTSTART:19700101T000000\n"
+        "END:STANDARD\n"
+        "END:VTIMEZONE\n"
         + "".join(events)
         + "END:VCALENDAR\n"
     )
