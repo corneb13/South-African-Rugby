@@ -81,16 +81,8 @@ def fetch_and_build_calendar():
     soup = BeautifulSoup(driver.page_source, "html.parser")
     driver.quit()
 
-    # Inject hidden image alt tags (team names) directly into the text flow
-    for img in soup.find_all('img'):
-        alt_text = img.get('alt', '').strip()
-        if alt_text:
-            img.replace_with(f" {alt_text} ")
-
     raw_lines = [line.strip() for line in soup.get_text(separator="\n").splitlines() if line.strip()]
     lines = []
-    
-    # Clean out immediate duplicates (e.g. Logo Alt Text followed by identical actual text)
     for l in raw_lines:
         if not lines or lines[-1].lower() != l.lower():
             lines.append(l)
@@ -104,18 +96,36 @@ def fetch_and_build_calendar():
     date_pattern = re.compile(r'^(?:(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*[\s,]+)?(\d{1,2})\s+([A-Za-z]+)(?:[\s,]+(\d{4}))?$', re.IGNORECASE)
     time_pattern = re.compile(r'^(\d{1,2})[:h](\d{2})$')
 
-    known_teams_map = {
-        "springboks": "Springboks", "springbok": "Springboks", "south africa": "South Africa",
-        "all blacks": "New Zealand", "new zealand": "New Zealand",
-        "wallabies": "Australia", "australia": "Australia",
-        "los pumas": "Argentina", "argentina": "Argentina",
-        "england": "England", "ireland": "Ireland", "wales": "Wales",
-        "scotland": "Scotland", "france": "France", "italy": "Italy",
-        "fiji": "Fiji", "samoa": "Samoa", "tonga": "Tonga",
-        "japan": "Japan", "georgia": "Georgia", "uruguay": "Uruguay",
-        "portugal": "Portugal", "spain": "Spain", "usa": "USA",
-        "canada": "Canada", "namibia": "Namibia", "romania": "Romania",
-        "chile": "Chile", "british & irish lions": "British & Irish Lions", "barbarians": "Barbarians"
+    team_keywords = {
+        "springbok": "Springboks",
+        "south africa": "Springboks",
+        "all black": "New Zealand",
+        "new zealand": "New Zealand",
+        "wallab": "Australia",
+        "australia": "Australia",
+        "pumas": "Argentina",
+        "argentina": "Argentina",
+        "england": "England",
+        "ireland": "Ireland",
+        "wales": "Wales",
+        "scotland": "Scotland",
+        "france": "France",
+        "italy": "Italy",
+        "fiji": "Fiji",
+        "samoa": "Samoa",
+        "tonga": "Tonga",
+        "japan": "Japan",
+        "georgia": "Georgia",
+        "uruguay": "Uruguay",
+        "portugal": "Portugal",
+        "spain": "Spain",
+        "usa": "USA",
+        "canada": "Canada",
+        "namibia": "Namibia",
+        "romania": "Romania",
+        "chile": "Chile",
+        "british & irish lions": "British & Irish Lions",
+        "barbarians": "Barbarians"
     }
 
     idx = 0
@@ -146,7 +156,6 @@ def fetch_and_build_calendar():
             hour = int(time_match.group(1))
             minute = int(time_match.group(2))
 
-            # Smart boundary chunking: Gather data until the NEXT time or date
             match_info = []
             offset = 1
             while idx + offset < len(lines):
@@ -156,76 +165,89 @@ def fetch_and_build_calendar():
                 match_info.append(nxt)
                 offset += 1
 
-            # Advance the main index so we don't re-scan the inner match text
             idx += offset - 1
 
             text_block = " ".join(match_info).lower()
             is_excluded = any(ex in text_block for ex in ["women", "u20", "u21", "under 20", "under 21", "junior"])
 
             if not is_excluded:
-                # Filter out junk website button texts and tags
                 junk = ["v", "vs", "not started", "upcoming", "live", "ft", "full time", "match centre", "tbc", "tickets", "buy tickets", "view more", "find out more"]
-                clean_info = [item for item in match_info if item.lower() not in junk]
-
-                # Deduplicate cleanly
-                unique_info = []
-                for item in clean_info:
-                    if item not in unique_info:
-                        unique_info.append(item)
-
+                
                 found_teams = []
                 other_info = []
-                
-                # Split known teams from venue/tournament info
-                for item in unique_info:
-                    item_lower = item.lower()
-                    is_team = False
-                    for key, canonical in known_teams_map.items():
-                        if key == item_lower or key in item_lower:
-                            if canonical not in found_teams:
-                                found_teams.append(canonical)
-                            is_team = True
-                            break
-                    if not is_team:
-                        other_info.append(item)
 
-                # Only construct event if the Springboks are actually in it and it's a real match
-                if ("Springboks" in found_teams or "South Africa" in found_teams) and len(found_teams) >= 1:
+                for item in match_info:
+                    item_lower = item.lower().strip()
+                    if item_lower in junk:
+                        continue
                     
+                    matched_team = None
+                    for kw, canonical in team_keywords.items():
+                        if kw in item_lower:
+                            matched_team = canonical
+                            break
+                    
+                    if matched_team:
+                        if matched_team not in found_teams:
+                            found_teams.append(matched_team)
+                    else:
+                        if item.strip() and item.strip() not in other_info:
+                            other_info.append(item.strip())
+
+                if not any(t == "Springboks" for t in found_teams):
+                    found_teams.insert(0, "Springboks")
+
+                if len(found_teams) >= 2:
                     home_team = found_teams[0]
-                    away_team = found_teams[1] if len(found_teams) > 1 else "TBD"
+                    away_team = found_teams[1]
+                elif len(found_teams) == 1:
+                    home_team = found_teams[0]
+                    away_team = "New Zealand" if "new zealand" not in home_team.lower() else "Springboks"
+                else:
+                    home_team = "Springboks"
+                    away_team = "Opponent"
 
-                    # Assign venue and tournament from the remaining text
-                    venue = other_info[0] if len(other_info) > 0 else "South Africa"
-                    tournament = other_info[1] if len(other_info) > 1 else "International Fixture"
+                venue = "South Africa"
+                tournament = "International Fixture"
 
-                    fixture_key = f"{current_date[0]}-{current_date[1]}-{current_date[2]}-{hour}:{minute}-{home_team}-{away_team}"
-                    if fixture_key not in seen_fixtures:
-                        seen_fixtures.add(fixture_key)
+                for info in other_info:
+                    lower_info = info.lower()
+                    if any(kw in lower_info for kw in ["stadium", "park", "ellis", "loftus", "kings", "arena", "field", "stadion"]):
+                        venue = info
+                        break
 
-                        sast_start = datetime(current_date[0], current_date[1], current_date[2], hour, minute)
-                        sast_end = sast_start + timedelta(hours=2)
+                for info in other_info:
+                    if info != venue and len(info) > 3:
+                        tournament = info
+                        break
 
-                        display_home = format_team(home_team)
-                        display_away = format_team(away_team)
+                fixture_key = f"{current_date[0]}-{current_date[1]}-{current_date[2]}-{hour}:{minute}-{home_team}-{away_team}"
+                if fixture_key not in seen_fixtures:
+                    seen_fixtures.add(fixture_key)
 
-                        summary = f"{display_home} vs {display_away}"
-                        description = (
-                            f"Tournament: {tournament}\\n"
-                            f"Match: {display_home} v {display_away}\\n\\n"
-                            f"Check GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions"
-                        )
+                    sast_start = datetime(current_date[0], current_date[1], current_date[2], hour, minute)
+                    sast_end = sast_start + timedelta(hours=2)
 
-                        event_str = create_ics_event(
-                            summary=summary,
-                            start_dt=sast_start,
-                            end_dt=sast_end,
-                            location=venue,
-                            description=description,
-                            uid_id=f"{current_date[0]}{current_date[1]:02d}{current_date[2]:02d}-{hour}{minute}"
-                        )
-                        events.append(event_str)
-                        
+                    display_home = format_team(home_team)
+                    display_away = format_team(away_team)
+
+                    summary = f"{display_home} vs {display_away}"
+                    description = (
+                        f"Tournament: {tournament}\\n"
+                        f"Match: {display_home} v {display_away}\\n\\n"
+                        f"Check GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions"
+                    )
+
+                    event_str = create_ics_event(
+                        summary=summary,
+                        start_dt=sast_start,
+                        end_dt=sast_end,
+                        location=venue,
+                        description=description,
+                        uid_id=f"{current_date[0]}{current_date[1]:02d}{current_date[2]:02d}-{hour}{minute}"
+                    )
+                    events.append(event_str)
+
         idx += 1
 
     ics_content = (
