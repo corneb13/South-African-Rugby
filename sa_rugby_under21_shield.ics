@@ -1,0 +1,448 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//South African Rugby - SA Rugby Under-21 Shield//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:SA Rugby Under-21 Shield
+X-WR-TIMEZONE:Africa/Johannesburg
+BEGIN:VEVENT
+UID:sarugby-match-20260822-13@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260822T100000Z
+DTEND:20260822T120000Z
+SUMMARY:🏉 Limpopo U21 vs V
+LOCATION:South Africa
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Limpopo U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260822-14@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260822T100000Z
+DTEND:20260822T120000Z
+SUMMARY:🏉 Valke U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 22 August 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Valke U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260822-15@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260822T100000Z
+DTEND:20260822T120000Z
+SUMMARY:🏉 Griquas U21 vs V
+LOCATION:Suzuki Stadium, Kimberley
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Griquas U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260822-16@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260822T100000Z
+DTEND:20260822T120000Z
+SUMMARY:🏉 Griffons U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 22 August 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Griffons U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260822-17@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260822T110000Z
+DTEND:20260822T130000Z
+SUMMARY:🏉 Eastern Province U21 vs V
+LOCATION:Otto du Plessis High School, Gqeberha
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Eastern Province U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260822-18@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260822T110000Z
+DTEND:20260822T130000Z
+SUMMARY:🏉 SWD U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 22 August 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: SWD U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260822-19@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260822T110000Z
+DTEND:20260822T130000Z
+SUMMARY:🏉 Border U21 vs V
+LOCATION:Sisa Dukashe Stadium, Mdantsane
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Border U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260822-20@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260822T110000Z
+DTEND:20260822T130000Z
+SUMMARY:🏉 Boland U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 22 August 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Boland U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260829-41@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260829T100000Z
+DTEND:20260829T120000Z
+SUMMARY:🏉 Boland U21 vs V
+LOCATION:Boland Park, Worcester
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Boland U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260829-42@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260829T100000Z
+DTEND:20260829T120000Z
+SUMMARY:🏉 Eastern Province U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 29 August 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Eastern Province U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260829-43@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260829T100000Z
+DTEND:20260829T120000Z
+SUMMARY:🏉 Griffons U21 vs V
+LOCATION:Down Touch Investments Stadium, Welkom
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Griffons U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260829-44@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260829T100000Z
+DTEND:20260829T120000Z
+SUMMARY:🏉 Limpopo U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 29 August 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Limpopo U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260829-47@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260829T100000Z
+DTEND:20260829T120000Z
+SUMMARY:🏉 Valke U21 vs V
+LOCATION:Barnard Stadium, Kempton Park
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Valke U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260829-48@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260829T100000Z
+DTEND:20260829T120000Z
+SUMMARY:🏉 Pumas U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 29 August 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Pumas U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260829-49@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260829T110000Z
+DTEND:20260829T130000Z
+SUMMARY:🏉 SWD U21 vs V
+LOCATION:Outeniqua Park, George
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: SWD U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260829-50@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260829T110000Z
+DTEND:20260829T130000Z
+SUMMARY:🏉 Border U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 29 August 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Border U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260905-63@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260905T100000Z
+DTEND:20260905T120000Z
+SUMMARY:🏉 Boland U21 vs V
+LOCATION:Boland Stadium, Wellington
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Boland U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260905-64@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260905T100000Z
+DTEND:20260905T120000Z
+SUMMARY:🏉 SWD U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 5 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: SWD U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260905-65@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260905T100000Z
+DTEND:20260905T120000Z
+SUMMARY:🏉 Griquas U21 vs V
+LOCATION:Suzuki Stadium, Kimberley
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Griquas U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260905-66@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260905T100000Z
+DTEND:20260905T120000Z
+SUMMARY:🏉 Pumas U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 5 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Pumas U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260905-67@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260905T100000Z
+DTEND:20260905T120000Z
+SUMMARY:🏉 Border U21 vs V
+LOCATION:Sisa Dukashe Stadium, Mdantsane
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Border U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260905-68@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260905T100000Z
+DTEND:20260905T120000Z
+SUMMARY:🏉 Eastern Province U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 5 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Eastern Province U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260905-69@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260905T100000Z
+DTEND:20260905T120000Z
+SUMMARY:🏉 Griffons U21 vs V
+LOCATION:Down Touch Investments Stadium, Welkom
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Griffons U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260905-70@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260905T100000Z
+DTEND:20260905T120000Z
+SUMMARY:🏉 Valke U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 5 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Valke U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260912-79@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260912T100000Z
+DTEND:20260912T120000Z
+SUMMARY:🏉 Pumas U21 vs V
+LOCATION:Nelspruit Rugby Club, Nelspruit
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Pumas U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260912-80@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260912T100000Z
+DTEND:20260912T120000Z
+SUMMARY:🏉 Limpopo U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 12 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Limpopo U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260912-81@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260912T100000Z
+DTEND:20260912T120000Z
+SUMMARY:🏉 Eastern Province U21 vs V
+LOCATION:Otto du Plessis High School, Gqeberha
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Eastern Province U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260912-82@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260912T100000Z
+DTEND:20260912T120000Z
+SUMMARY:🏉 Boland U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 12 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Boland U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260912-83@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260912T100000Z
+DTEND:20260912T120000Z
+SUMMARY:🏉 Valke U21 vs V
+LOCATION:Barnard Stadium, Kempton Park
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Valke U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260912-84@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260912T100000Z
+DTEND:20260912T120000Z
+SUMMARY:🏉 Griquas U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 12 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Griquas U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260912-85@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260912T110000Z
+DTEND:20260912T130000Z
+SUMMARY:🏉 Border U21 vs V
+LOCATION:Sisa Dukashe Stadium, Mdantsane
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Border U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260912-86@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260912T110000Z
+DTEND:20260912T130000Z
+SUMMARY:🏉 SWD U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 12 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: SWD U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260919-89@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260919T100000Z
+DTEND:20260919T120000Z
+SUMMARY:🏉 Eastern Province U21 vs V
+LOCATION:Otto du Plessis High School, Gqeberha
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Eastern Province U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260919-90@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260919T100000Z
+DTEND:20260919T120000Z
+SUMMARY:🏉 Border U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 19 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Border U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260919-91@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260919T100000Z
+DTEND:20260919T120000Z
+SUMMARY:🏉 Pumas U21 vs V
+LOCATION:Nelspruit Rugby Club, Nelspruit
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Pumas U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260919-92@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260919T100000Z
+DTEND:20260919T120000Z
+SUMMARY:🏉 Griffons U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 19 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Griffons U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260919-93@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260919T100000Z
+DTEND:20260919T120000Z
+SUMMARY:🏉 Limpopo U21 vs V
+LOCATION:Mogol RC, Lephalale
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Limpopo U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260919-94@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260919T100000Z
+DTEND:20260919T120000Z
+SUMMARY:🏉 Griquas U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 19 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Griquas U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260919-95@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260919T110000Z
+DTEND:20260919T130000Z
+SUMMARY:🏉 SWD U21 vs V
+LOCATION:Outeniqua Park, George
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: SWD U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260919-96@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260919T110000Z
+DTEND:20260919T130000Z
+SUMMARY:🏉 Boland U21 vs SA Rugby Under-21 Shield
+LOCATION:Friday, 25 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Boland U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260926-111@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260926T100000Z
+DTEND:20260926T120000Z
+SUMMARY:🏉 Boland U21 vs V
+LOCATION:Boland Stadium, Wellington
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Boland U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260926-112@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260926T100000Z
+DTEND:20260926T120000Z
+SUMMARY:🏉 Border U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 26 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Border U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260926-113@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260926T110000Z
+DTEND:20260926T130000Z
+SUMMARY:🏉 SWD U21 vs V
+LOCATION:Outeniqua Park, George
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: SWD U21 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260926-114@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260926T110000Z
+DTEND:20260926T130000Z
+SUMMARY:🏉 Eastern Province U21 vs SA Rugby Under-21 Shield
+LOCATION:Saturday, 26 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-21 Shield\nMatch: Eastern Province U21 v SA Rugby Under-21 Shield\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

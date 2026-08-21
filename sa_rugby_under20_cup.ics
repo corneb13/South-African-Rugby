@@ -1,0 +1,488 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//South African Rugby - SA Rugby Under-20 Cup//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:SA Rugby Under-20 Cup
+X-WR-TIMEZONE:Africa/Johannesburg
+BEGIN:VEVENT
+UID:sarugby-match-20260821-1@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260821T090000Z
+DTEND:20260821T110000Z
+SUMMARY:🏉 Fidelity ADT Lions U20 vs V
+LOCATION:Wits Rugby Stadium, Johannesburg
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Fidelity ADT Lions U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260821-2@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260821T090000Z
+DTEND:20260821T110000Z
+SUMMARY:🏉 Leopards U20 vs SA Rugby Under-20 Cup
+LOCATION:Friday, 21 August 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Leopards U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260821-3@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260821T103000Z
+DTEND:20260821T123000Z
+SUMMARY:🏉 Vodacom Bulls U20 vs V
+LOCATION:Loftus Versfeld, Pretoria
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Vodacom Bulls U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260821-4@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260821T103000Z
+DTEND:20260821T123000Z
+SUMMARY:🏉 DHL Stormers Bolts vs SA Rugby Under-20 Cup
+LOCATION:Friday, 21 August 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: DHL Stormers Bolts v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260822-23@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260822T120000Z
+DTEND:20260822T140000Z
+SUMMARY:🏉 Sharks GEN vs V
+LOCATION:Woodburn Stadium, Pietermaritzburg
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Sharks GEN v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260822-24@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260822T120000Z
+DTEND:20260822T140000Z
+SUMMARY:🏉 Toyota Cheetahs U20 vs SA Rugby Under-20 Cup
+LOCATION:Saturday, 22 August 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Toyota Cheetahs U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260828-31@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260828T120000Z
+DTEND:20260828T140000Z
+SUMMARY:🏉 Sharks GEN vs V
+LOCATION:Kings Park, Durban
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Sharks GEN v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260828-32@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260828T120000Z
+DTEND:20260828T140000Z
+SUMMARY:🏉 Vodacom Bulls U20 vs SA Rugby Under-20 Cup
+LOCATION:Friday, 28 August 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Vodacom Bulls U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260829-37@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260829T070000Z
+DTEND:20260829T090000Z
+SUMMARY:🏉 DHL Stormers Bolts vs V
+LOCATION:City Park, Cape Town
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: DHL Stormers Bolts v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260829-38@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260829T070000Z
+DTEND:20260829T090000Z
+SUMMARY:🏉 Fidelity ADT Lions U20 vs SA Rugby Under-20 Cup
+LOCATION:Saturday, 29 August 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Fidelity ADT Lions U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260829-39@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260829T080000Z
+DTEND:20260829T100000Z
+SUMMARY:🏉 Leopards U20 vs V
+LOCATION:Olen Park, Potchefstroom
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Leopards U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260829-40@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260829T080000Z
+DTEND:20260829T100000Z
+SUMMARY:🏉 Toyota Cheetahs U20 vs SA Rugby Under-20 Cup
+LOCATION:Saturday, 29 August 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Toyota Cheetahs U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260904-55@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260904T090000Z
+DTEND:20260904T110000Z
+SUMMARY:🏉 Fidelity ADT Lions U20 vs V
+LOCATION:South Africa
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Fidelity ADT Lions U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260904-56@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260904T090000Z
+DTEND:20260904T110000Z
+SUMMARY:🏉 Sharks GEN vs SA Rugby Under-20 Cup
+LOCATION:Friday, 4 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Sharks GEN v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260904-57@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260904T100000Z
+DTEND:20260904T120000Z
+SUMMARY:🏉 Toyota Cheetahs U20 vs V
+LOCATION:Toyota Stadium, Bloemfontein
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Toyota Cheetahs U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260904-58@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260904T100000Z
+DTEND:20260904T120000Z
+SUMMARY:🏉 Vodacom Bulls U20 vs SA Rugby Under-20 Cup
+LOCATION:Saturday, 5 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Vodacom Bulls U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260905-59@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260905T080000Z
+DTEND:20260905T100000Z
+SUMMARY:🏉 Leopards U20 vs V
+LOCATION:Olen Park, Potchefstroom
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Leopards U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260905-60@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260905T080000Z
+DTEND:20260905T100000Z
+SUMMARY:🏉 DHL Stormers Bolts vs SA Rugby Under-20 Cup
+LOCATION:Saturday, 5 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: DHL Stormers Bolts v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260911-73@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260911T080000Z
+DTEND:20260911T100000Z
+SUMMARY:🏉 Vodacom Bulls U20 vs V
+LOCATION:South Africa
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Vodacom Bulls U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260911-74@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260911T080000Z
+DTEND:20260911T100000Z
+SUMMARY:🏉 Fidelity ADT Lions U20 vs SA Rugby Under-20 Cup
+LOCATION:Friday, 11 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Fidelity ADT Lions U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260911-75@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260911T100000Z
+DTEND:20260911T120000Z
+SUMMARY:🏉 Toyota Cheetahs U20 vs V
+LOCATION:Toyota Stadium, Bloemfontein
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Toyota Cheetahs U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260911-76@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260911T100000Z
+DTEND:20260911T120000Z
+SUMMARY:🏉 DHL Stormers Bolts vs SA Rugby Under-20 Cup
+LOCATION:Saturday, 12 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: DHL Stormers Bolts v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260912-77@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260912T090000Z
+DTEND:20260912T110000Z
+SUMMARY:🏉 Sharks GEN vs V
+LOCATION:Kings Park, Durban
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Sharks GEN v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260912-78@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260912T090000Z
+DTEND:20260912T110000Z
+SUMMARY:🏉 Leopards U20 vs SA Rugby Under-20 Cup
+LOCATION:Saturday, 12 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Leopards U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260925-97@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260925T100000Z
+DTEND:20260925T120000Z
+SUMMARY:🏉 Toyota Cheetahs U20 vs V
+LOCATION:Toyota Stadium, Bloemfontein
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Toyota Cheetahs U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260925-98@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260925T100000Z
+DTEND:20260925T120000Z
+SUMMARY:🏉 Sharks GEN vs SA Rugby Under-20 Cup
+LOCATION:Friday, 25 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Sharks GEN v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260926-105@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260926T080000Z
+DTEND:20260926T100000Z
+SUMMARY:🏉 DHL Stormers Bolts vs V
+LOCATION:City Park, Cape Town
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: DHL Stormers Bolts v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260926-106@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260926T080000Z
+DTEND:20260926T100000Z
+SUMMARY:🏉 Vodacom Bulls U20 vs SA Rugby Under-20 Cup
+LOCATION:Saturday, 26 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Vodacom Bulls U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260926-107@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260926T080000Z
+DTEND:20260926T100000Z
+SUMMARY:🏉 Leopards U20 vs V
+LOCATION:Olen Park, Potchefstroom
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Leopards U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260926-108@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260926T080000Z
+DTEND:20260926T100000Z
+SUMMARY:🏉 Fidelity ADT Lions U20 vs SA Rugby Under-20 Cup
+LOCATION:Saturday, 26 September 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Fidelity ADT Lions U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261002-125@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261002T090000Z
+DTEND:20261002T110000Z
+SUMMARY:🏉 Fidelity ADT Lions U20 vs V
+LOCATION:South Africa
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Fidelity ADT Lions U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261002-126@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261002T090000Z
+DTEND:20261002T110000Z
+SUMMARY:🏉 DHL Stormers Bolts vs SA Rugby Under-20 Cup
+LOCATION:Friday, 2 October 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: DHL Stormers Bolts v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261002-127@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261002T100000Z
+DTEND:20261002T120000Z
+SUMMARY:🏉 Toyota Cheetahs U20 vs V
+LOCATION:Toyota Stadium, Bloemfontein
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Toyota Cheetahs U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261002-128@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261002T100000Z
+DTEND:20261002T120000Z
+SUMMARY:🏉 Leopards U20 vs SA Rugby Under-20 Cup
+LOCATION:Friday, 2 October 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Leopards U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261003-135@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261003T080000Z
+DTEND:20261003T100000Z
+SUMMARY:🏉 Vodacom Bulls U20 vs V
+LOCATION:South Africa
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Vodacom Bulls U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261003-136@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261003T080000Z
+DTEND:20261003T100000Z
+SUMMARY:🏉 Sharks GEN vs SA Rugby Under-20 Cup
+LOCATION:Saturday, 3 October 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Sharks GEN v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261010-151@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261010T063000Z
+DTEND:20261010T083000Z
+SUMMARY:🏉 Vodacom Bulls U20 vs V
+LOCATION:Loftus Versfeld, Pretoria
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Vodacom Bulls U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261010-152@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261010T063000Z
+DTEND:20261010T083000Z
+SUMMARY:🏉 Toyota Cheetahs U20 vs SA Rugby Under-20 Cup
+LOCATION:Saturday, 10 October 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Toyota Cheetahs U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261010-153@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261010T080000Z
+DTEND:20261010T100000Z
+SUMMARY:🏉 DHL Stormers Bolts vs V
+LOCATION:City Park, Cape Town
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: DHL Stormers Bolts v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261010-154@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261010T080000Z
+DTEND:20261010T100000Z
+SUMMARY:🏉 Leopards U20 vs SA Rugby Under-20 Cup
+LOCATION:Saturday, 10 October 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Leopards U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261010-155@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261010T090000Z
+DTEND:20261010T110000Z
+SUMMARY:🏉 Sharks GEN vs V
+LOCATION:Kings Park, Durban
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Sharks GEN v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261010-156@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261010T090000Z
+DTEND:20261010T110000Z
+SUMMARY:🏉 Fidelity ADT Lions U20 vs SA Rugby Under-20 Cup
+LOCATION:Saturday, 10 October 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Fidelity ADT Lions U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261016-169@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261016T090000Z
+DTEND:20261016T110000Z
+SUMMARY:🏉 Fidelity ADT Lions U20 vs V
+LOCATION:South Africa
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Fidelity ADT Lions U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261016-170@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261016T090000Z
+DTEND:20261016T110000Z
+SUMMARY:🏉 Vodacom Bulls U20 vs SA Rugby Under-20 Cup
+LOCATION:Saturday, 17 October 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Vodacom Bulls U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261017-171@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261017T080000Z
+DTEND:20261017T100000Z
+SUMMARY:🏉 DHL Stormers Bolts vs V
+LOCATION:City Park, Cape Town
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: DHL Stormers Bolts v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261017-172@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261017T080000Z
+DTEND:20261017T100000Z
+SUMMARY:🏉 Toyota Cheetahs U20 vs SA Rugby Under-20 Cup
+LOCATION:Saturday, 17 October 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Toyota Cheetahs U20 v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261017-173@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261017T080000Z
+DTEND:20261017T100000Z
+SUMMARY:🏉 Leopards U20 vs V
+LOCATION:Olen Park, Potchefstroom
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Leopards U20 v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261017-174@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20261017T080000Z
+DTEND:20261017T100000Z
+SUMMARY:🏉 Sharks GEN vs SA Rugby Under-20 Cup
+LOCATION:Friday, 23 October 2026
+DESCRIPTION:Tournament: SA Rugby Under-20 Cup\nMatch: Sharks GEN v SA Rugby Under-20 Cup\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

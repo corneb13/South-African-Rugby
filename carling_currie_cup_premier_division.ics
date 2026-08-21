@@ -1,0 +1,168 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//South African Rugby - Carling Currie Cup Premier Division//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Carling Currie Cup Premier Division
+X-WR-TIMEZONE:Africa/Johannesburg
+BEGIN:VEVENT
+UID:sarugby-match-20260821-5@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260821T110000Z
+DTEND:20260821T130000Z
+SUMMARY:🏉 Airlink Pumas vs V
+LOCATION:Mbombela Stadium, Nelspruit
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: Airlink Pumas v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260821-6@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260821T110000Z
+DTEND:20260821T130000Z
+SUMMARY:🏉 Suzuki Griquas vs Carling Currie Cup Premier Division
+LOCATION:Friday, 21 August 2026
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: Suzuki Griquas v Carling Currie Cup Premier Division\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260821-7@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260821T130500Z
+DTEND:20260821T150500Z
+SUMMARY:🏉 Vodacom Bulls XV vs V
+LOCATION:Loftus Versfeld, Pretoria
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: Vodacom Bulls XV v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260821-8@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260821T130500Z
+DTEND:20260821T150500Z
+SUMMARY:🏉 DHL Stormers XXIII vs Carling Currie Cup Premier Division
+LOCATION:Friday, 21 August 2026
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: DHL Stormers XXIII v Carling Currie Cup Premier Division\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260821-9@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260821T151500Z
+DTEND:20260821T171500Z
+SUMMARY:🏉 Hollywoodbets Sharks XV vs V
+LOCATION:Woodburn Stadium, Pietermaritzburg
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: Hollywoodbets Sharks XV v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260821-10@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260821T151500Z
+DTEND:20260821T171500Z
+SUMMARY:🏉 Fidelity ADT Lions vs Carling Currie Cup Premier Division
+LOCATION:Saturday, 22 August 2026
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: Fidelity ADT Lions v Carling Currie Cup Premier Division\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260823-27@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260823T110000Z
+DTEND:20260823T130000Z
+SUMMARY:🏉 Toyota Cheetahs vs V
+LOCATION:Toyota Stadium, Bloemfontein
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: Toyota Cheetahs v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260823-28@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260823T110000Z
+DTEND:20260823T130000Z
+SUMMARY:🏉 Sanlam Boland Kavaliers vs Carling Currie Cup Premier Division
+LOCATION:Tuesday, 25 August 2026
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: Sanlam Boland Kavaliers v Carling Currie Cup Premier Division\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260828-33@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260828T130500Z
+DTEND:20260828T150500Z
+SUMMARY:🏉 Fidelity ADT Lions vs V
+LOCATION:South Africa
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: Fidelity ADT Lions v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260828-34@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260828T130500Z
+DTEND:20260828T150500Z
+SUMMARY:🏉 DHL Stormers XXIII vs Carling Currie Cup Premier Division
+LOCATION:Friday, 28 August 2026
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: DHL Stormers XXIII v Carling Currie Cup Premier Division\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260828-35@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260828T151500Z
+DTEND:20260828T171500Z
+SUMMARY:🏉 Hollywoodbets Sharks XV vs V
+LOCATION:Kings Park, Durban
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: Hollywoodbets Sharks XV v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260828-36@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260828T151500Z
+DTEND:20260828T171500Z
+SUMMARY:🏉 Vodacom Bulls XV vs Carling Currie Cup Premier Division
+LOCATION:Saturday, 29 August 2026
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: Vodacom Bulls XV v Carling Currie Cup Premier Division\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260829-45@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260829T100000Z
+DTEND:20260829T120000Z
+SUMMARY:🏉 Airlink Pumas vs V
+LOCATION:Mbombela Stadium, Nelspruit
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: Airlink Pumas v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260829-46@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260829T100000Z
+DTEND:20260829T120000Z
+SUMMARY:🏉 Toyota Cheetahs vs Carling Currie Cup Premier Division
+LOCATION:Saturday, 29 August 2026
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: Toyota Cheetahs v Carling Currie Cup Premier Division\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260830-53@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260830T110000Z
+DTEND:20260830T130000Z
+SUMMARY:🏉 Sanlam Boland Kavaliers vs V
+LOCATION:Boland Stadium, Wellington
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: Sanlam Boland Kavaliers v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20260830-54@sarugby
+DTSTAMP:20260821T091956Z
+DTSTART:20260830T110000Z
+DTEND:20260830T130000Z
+SUMMARY:🏉 Suzuki Griquas vs Carling Currie Cup Premier Division
+LOCATION:Friday, 4 September 2026
+DESCRIPTION:Tournament: Carling Currie Cup Premier Division\nMatch: Suzuki Griquas v Carling Currie Cup Premier Division\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

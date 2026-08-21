@@ -23,6 +23,10 @@ def create_ics_event(summary, start_dt, end_dt, location, description, uid_id):
         "END:VEVENT\n"
     )
 
+def sanitize_filename(name):
+    clean = re.sub(r'[^a-zA-Z0-9\s]', '', name)
+    return clean.strip().replace(' ', '_').lower() + '.ics'
+
 def fetch_and_build_calendar():
     print("Starting headless browser...")
     chrome_options = Options()
@@ -38,11 +42,8 @@ def fetch_and_build_calendar():
     last_height = driver.execute_script("return document.body.scrollHeight")
     
     for _ in range(12): 
-        # Scroll to the bottom to trigger infinite scroll
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(2)
-        
-        # Look for any "Load More" buttons and click them
         try:
             buttons = driver.find_elements(By.XPATH, "//button | //a")
             for btn in buttons:
@@ -65,7 +66,8 @@ def fetch_and_build_calendar():
     driver.quit()
 
     soup = BeautifulSoup(html, "html.parser")
-    events = []
+    
+    calendars = {}
     
     current_date = None
     match_count = 0
@@ -106,14 +108,16 @@ def fetch_and_build_calendar():
                     away_team = lines[idx + 4] if idx + 4 < len(lines) else away_team
 
                 venue_info = "South Africa"
-                comp_info = "SA Rugby Fixture"
+                comp_info = "SA Rugby Fixture" 
+                
+                comp_keywords = ["Cup", "Division", "Shield", "Championship", "League", "Test", "Tour", "Series", "International"]
                 
                 for offset in range(3, 8):
                     if idx + offset < len(lines):
                         check_line = lines[idx + offset]
                         if "," in check_line:
                             venue_info = check_line
-                        elif any(k in check_line for k in ["Cup", "Division", "Shield", "Championship", "League"]):
+                        elif any(k in check_line for k in comp_keywords):
                             comp_info = check_line
 
                 sast_dt = datetime(current_date[0], current_date[1], current_date[2], hour, minute)
@@ -122,39 +126,54 @@ def fetch_and_build_calendar():
                 utc_end = utc_start + timedelta(hours=2)
 
                 summary = f"🏉 {home_team} vs {away_team}"
-                description = f"Tournament: {comp_info}\\nMatch: {home_team} v {away_team}"
+                
+                # ---- UPDATED DESCRIPTION SECTION ----
+                description = (
+                    f"Tournament: {comp_info}\\n"
+                    f"Match: {home_team} v {away_team}\\n\\n"
+                    f"Need to update subscriptions?\\n"
+                    f"Check GitHub: https://github.com/corneb13/South-African-Rugby/actions"
+                )
+                # -------------------------------------
 
                 match_count += 1
-                events.append(
-                    create_ics_event(
-                        summary=summary,
-                        start_dt=utc_start,
-                        end_dt=utc_end,
-                        location=venue_info,
-                        description=description,
-                        uid_id=f"{current_date[0]}{current_date[1]:02d}{current_date[2]:02d}-{match_count}"
-                    )
+                event_str = create_ics_event(
+                    summary=summary,
+                    start_dt=utc_start,
+                    end_dt=utc_end,
+                    location=venue_info,
+                    description=description,
+                    uid_id=f"{current_date[0]}{current_date[1]:02d}{current_date[2]:02d}-{match_count}"
                 )
+                
+                if comp_info not in calendars:
+                    calendars[comp_info] = []
+                calendars[comp_info].append(event_str)
+                
             except Exception as e:
                 print(f"Error parsing fixture around line {idx}: {e}")
 
         idx += 1
 
-    ics_content = (
-        "BEGIN:VCALENDAR\n"
-        "VERSION:2.0\n"
-        "PRODID:-//South African Rugby Fixtures//EN\n"
-        "CALSCALE:GREGORIAN\n"
-        "METHOD:PUBLISH\n"
-        "X-WR-CALNAME:South African Rugby Fixtures\n"
-        "X-WR-TIMEZONE:Africa/Johannesburg\n"
-        + "".join(events)
-        + "END:VCALENDAR\n"
-    )
+    for comp_name, events_list in calendars.items():
+        filename = sanitize_filename(comp_name)
+        
+        ics_content = (
+            "BEGIN:VCALENDAR\n"
+            "VERSION:2.0\n"
+            f"PRODID:-//South African Rugby - {comp_name}//EN\n"
+            "CALSCALE:GREGORIAN\n"
+            "METHOD:PUBLISH\n"
+            f"X-WR-CALNAME:{comp_name}\n"
+            "X-WR-TIMEZONE:Africa/Johannesburg\n"
+            + "".join(events_list)
+            + "END:VCALENDAR\n"
+        )
 
-    with open("springboks.ics", "w", encoding="utf-8") as f:
-        f.write(ics_content)
-    print(f"Successfully generated springboks.ics with {len(events)} fixtures!")
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write(ics_content)
+            
+        print(f"Successfully generated {filename} with {len(events_list)} fixtures!")
 
 if __name__ == "__main__":
     fetch_and_build_calendar()
