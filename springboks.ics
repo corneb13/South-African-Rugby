@@ -7,82 +7,82 @@ X-WR-CALNAME:Springboks Fixtures
 X-WR-TIMEZONE:Africa/Johannesburg
 BEGIN:VEVENT
 UID:sarugby-springbok-20260822-1@sarugby
-DTSTAMP:20260821T122832Z
-DTSTART:20260822T131000Z
-DTEND:20260822T151000Z
-SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ V 🏉
+DTSTAMP:20260821T124048Z
+DTSTART;TZID=Africa/Johannesburg:20260822T151000
+DTEND;TZID=Africa/Johannesburg:20260822T171000
+SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Not Started 🏉
 LOCATION:South Africa
-DESCRIPTION:Tournament: International Fixture\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ V 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+DESCRIPTION:Tournament: International Fixture\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ Not Started 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
 UID:sarugby-springbok-20260829-2@sarugby
-DTSTAMP:20260821T122832Z
-DTSTART:20260829T131000Z
-DTEND:20260829T151000Z
-SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ V 🏉
-LOCATION:DHL Stadium, Cape Town
-DESCRIPTION:Tournament: International Fixture\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ V 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+DTSTAMP:20260821T124048Z
+DTSTART;TZID=Africa/Johannesburg:20260829T151000
+DTEND;TZID=Africa/Johannesburg:20260829T171000
+SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Not Started 🏉
+LOCATION:South Africa
+DESCRIPTION:Tournament: International Fixture\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ Not Started 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
 UID:sarugby-springbok-20260905-3@sarugby
-DTSTAMP:20260821T122832Z
-DTSTART:20260905T131000Z
-DTEND:20260905T151000Z
-SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ V 🏉
-LOCATION:FNB Stadium, Johannesburg
-DESCRIPTION:Tournament: International Fixture\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ V 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+DTSTAMP:20260821T124048Z
+DTSTART;TZID=Africa/Johannesburg:20260905T151000
+DTEND;TZID=Africa/Johannesburg:20260905T171000
+SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Not Started 🏉
+LOCATION:South Africa
+DESCRIPTION:Tournament: International Fixture\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ Not Started 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
 UID:sarugby-springbok-20260912-4@sarugby
-DTSTAMP:20260821T122832Z
-DTSTART:20260912T190000Z
-DTEND:20260912T210000Z
-SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ V 🏉
-LOCATION:M&T Bank Stadium, Baltimore
-DESCRIPTION:Tournament: International Fixture\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ V 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+DTSTAMP:20260821T124048Z
+DTSTART;TZID=Africa/Johannesburg:20260912T210000
+DTEND;TZID=Africa/Johannesburg:20260912T230000
+SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Not Started 🏉
+LOCATION:South Africa
+DESCRIPTION:Tournament: International Fixture\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ Not Started 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
 UID:sarugby-springbok-20260927-5@sarugby
-DTSTAMP:20260821T122832Z
-DTSTART:20260927T073000Z
-DTEND:20260927T093000Z
-SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Internationals 🏉
-LOCATION:Friday, 2 October 2026
-DESCRIPTION:Tournament: Internationals\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ Internationals 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+DTSTAMP:20260821T124048Z
+DTSTART;TZID=Africa/Johannesburg:20260927T093000
+DTEND;TZID=Africa/Johannesburg:20260927T113000
+SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Optus Stadium, Perth 🏉
+LOCATION:Internationals
+DESCRIPTION:Tournament: Match Info\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ Optus Stadium, Perth 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
 UID:sarugby-springbok-20261107-6@sarugby
-DTSTAMP:20260821T122832Z
-DTSTART:20261107T094000Z
-DTEND:20261107T114000Z
-SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Nations Championship 🏉
-LOCATION:Saturday, 7 November 2026
-DESCRIPTION:Tournament: Nations Championship\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ Nations Championship 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+DTSTAMP:20260821T124048Z
+DTSTART;TZID=Africa/Johannesburg:20261107T114000
+DTEND;TZID=Africa/Johannesburg:20261107T134000
+SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Allianz Stadium, Turin 🏉
+LOCATION:Nations Championship
+DESCRIPTION:Tournament: Match Info\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ Allianz Stadium, Turin 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
 UID:sarugby-springbok-20261113-7@sarugby
-DTSTAMP:20260821T122832Z
-DTSTART:20261113T181000Z
-DTEND:20261113T201000Z
-SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Nations Championship 🏉
-LOCATION:Saturday, 14 November 2026
-DESCRIPTION:Tournament: Nations Championship\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ Nations Championship 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+DTSTAMP:20260821T124048Z
+DTSTART;TZID=Africa/Johannesburg:20261113T201000
+DTEND;TZID=Africa/Johannesburg:20261113T221000
+SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Stade de France, Saint-Denis 🏉
+LOCATION:Nations Championship
+DESCRIPTION:Tournament: Match Info\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ Stade de France, Saint-Denis 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
 UID:sarugby-springbok-20261121-8@sarugby
-DTSTAMP:20260821T122832Z
-DTSTART:20261121T144000Z
-DTEND:20261121T164000Z
-SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Nations Championship 🏉
-LOCATION:Saturday, 21 November 2026
-DESCRIPTION:Tournament: Nations Championship\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ Nations Championship 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+DTSTAMP:20260821T124048Z
+DTSTART;TZID=Africa/Johannesburg:20261121T164000
+DTEND;TZID=Africa/Johannesburg:20261121T184000
+SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Aviva Stadium, Dublin 🏉
+LOCATION:Nations Championship
+DESCRIPTION:Tournament: Match Info\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ Aviva Stadium, Dublin 🏉\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR
