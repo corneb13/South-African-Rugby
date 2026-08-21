@@ -6,8 +6,8 @@ METHOD:PUBLISH
 X-WR-CALNAME:Nations Championship
 X-WR-TIMEZONE:Africa/Johannesburg
 BEGIN:VEVENT
-UID:sarugby-match-20261106-207@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261106-206@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261106T181000Z
 DTEND:20261106T201000Z
 SUMMARY:🏉 Ireland vs V
@@ -16,8 +16,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Ireland v V\n\nNeed to upda
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261106-208@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261106-207@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261106T181000Z
 DTEND:20261106T201000Z
 SUMMARY:🏉 Argentina vs Nations Championship
@@ -26,8 +26,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Argentina v Nations Champio
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261107-209@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261107-208@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261107T094000Z
 DTEND:20261107T114000Z
 SUMMARY:🏉 Italy vs V
@@ -36,8 +36,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Italy v V\n\nNeed to update
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261107-210@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261107-209@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261107T094000Z
 DTEND:20261107T114000Z
 SUMMARY:🏉 Springboks vs Nations Championship
@@ -46,8 +46,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Springboks v Nations Champi
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261107-211@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261107-210@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261107T121000Z
 DTEND:20261107T141000Z
 SUMMARY:🏉 Scotland vs V
@@ -56,8 +56,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Scotland v V\n\nNeed to upd
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261107-212@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261107-211@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261107T121000Z
 DTEND:20261107T141000Z
 SUMMARY:🏉 New Zealand vs Nations Championship
@@ -66,8 +66,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: New Zealand v Nations Champ
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261107-213@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261107-212@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261107T144000Z
 DTEND:20261107T164000Z
 SUMMARY:🏉 Wales vs V
@@ -76,8 +76,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Wales v V\n\nNeed to update
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261107-214@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261107-213@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261107T144000Z
 DTEND:20261107T164000Z
 SUMMARY:🏉 Japan vs Nations Championship
@@ -86,8 +86,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Japan v Nations Championshi
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261107-215@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261107-214@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261107T181000Z
 DTEND:20261107T201000Z
 SUMMARY:🏉 France vs V
@@ -96,8 +96,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: France v V\n\nNeed to updat
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261107-216@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261107-215@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261107T181000Z
 DTEND:20261107T201000Z
 SUMMARY:🏉 Fiji vs Nations Championship
@@ -106,8 +106,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Fiji v Nations Championship
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261108-217@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261108-216@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261108T131000Z
 DTEND:20261108T151000Z
 SUMMARY:🏉 England vs V
@@ -116,8 +116,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: England v V\n\nNeed to upda
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261108-218@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261108-217@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261108T131000Z
 DTEND:20261108T151000Z
 SUMMARY:🏉 Australia vs Nations Championship
@@ -126,8 +126,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Australia v Nations Champio
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261113-219@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261113-218@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261113T181000Z
 DTEND:20261113T201000Z
 SUMMARY:🏉 France vs V
@@ -136,8 +136,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: France v V\n\nNeed to updat
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261113-220@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261113-219@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261113T181000Z
 DTEND:20261113T201000Z
 SUMMARY:🏉 Springboks vs Nations Championship
@@ -146,8 +146,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Springboks v Nations Champi
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261114-221@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261114-220@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261114T094000Z
 DTEND:20261114T114000Z
 SUMMARY:🏉 Italy vs V
@@ -156,8 +156,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Italy v V\n\nNeed to update
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261114-222@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261114-221@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261114T094000Z
 DTEND:20261114T114000Z
 SUMMARY:🏉 Argentina vs Nations Championship
@@ -166,8 +166,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Argentina v Nations Champio
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261114-223@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261114-222@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261114T121000Z
 DTEND:20261114T141000Z
 SUMMARY:🏉 Wales vs V
@@ -176,8 +176,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Wales v V\n\nNeed to update
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261114-224@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261114-223@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261114T121000Z
 DTEND:20261114T141000Z
 SUMMARY:🏉 New Zealand vs Nations Championship
@@ -186,8 +186,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: New Zealand v Nations Champ
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261114-225@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261114-224@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261114T144000Z
 DTEND:20261114T164000Z
 SUMMARY:🏉 England vs V
@@ -196,8 +196,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: England v V\n\nNeed to upda
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261114-226@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261114-225@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261114T144000Z
 DTEND:20261114T164000Z
 SUMMARY:🏉 Japan vs Nations Championship
@@ -206,8 +206,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Japan v Nations Championshi
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261114-227@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261114-226@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261114T181000Z
 DTEND:20261114T201000Z
 SUMMARY:🏉 Ireland vs V
@@ -216,8 +216,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Ireland v V\n\nNeed to upda
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261114-228@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261114-227@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261114T181000Z
 DTEND:20261114T201000Z
 SUMMARY:🏉 Fiji vs Nations Championship
@@ -226,8 +226,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Fiji v Nations Championship
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261115-229@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261115-228@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261115T131000Z
 DTEND:20261115T151000Z
 SUMMARY:🏉 Scotland vs V
@@ -236,8 +236,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Scotland v V\n\nNeed to upd
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261115-230@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261115-229@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261115T131000Z
 DTEND:20261115T151000Z
 SUMMARY:🏉 Australia vs Nations Championship
@@ -246,28 +246,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Australia v Nations Champio
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261121-231@sarugby
-DTSTAMP:20260821T091956Z
-DTSTART:20261121T121000Z
-DTEND:20261121T141000Z
-SUMMARY:🏉 Scotland vs V
-LOCATION:Scottish Gas Murrayfield, Edinburgh
-DESCRIPTION:Tournament: Nations Championship\nMatch: Scotland v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-match-20261121-232@sarugby
-DTSTAMP:20260821T091956Z
-DTSTART:20261121T121000Z
-DTEND:20261121T141000Z
-SUMMARY:🏉 Japan vs Nations Championship
-LOCATION:Saturday, 21 November 2026
-DESCRIPTION:Tournament: Nations Championship\nMatch: Japan v Nations Championship\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-match-20261121-233@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261121-230@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261121T121000Z
 DTEND:20261121T141000Z
 SUMMARY:🏉 England vs V
@@ -276,8 +256,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: England v V\n\nNeed to upda
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261121-234@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261121-231@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261121T121000Z
 DTEND:20261121T141000Z
 SUMMARY:🏉 New Zealand vs Nations Championship
@@ -286,8 +266,28 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: New Zealand v Nations Champ
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261121-235@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261121-232@sarugby
+DTSTAMP:20260821T115046Z
+DTSTART:20261121T121000Z
+DTEND:20261121T141000Z
+SUMMARY:🏉 Scotland vs V
+LOCATION:Scottish Gas Murrayfield, Edinburgh
+DESCRIPTION:Tournament: Nations Championship\nMatch: Scotland v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261121-233@sarugby
+DTSTAMP:20260821T115046Z
+DTSTART:20261121T121000Z
+DTEND:20261121T141000Z
+SUMMARY:🏉 Japan vs Nations Championship
+LOCATION:Saturday, 21 November 2026
+DESCRIPTION:Tournament: Nations Championship\nMatch: Japan v Nations Championship\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261121-234@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261121T144000Z
 DTEND:20261121T164000Z
 SUMMARY:🏉 Ireland vs V
@@ -296,8 +296,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Ireland v V\n\nNeed to upda
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261121-236@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261121-235@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261121T144000Z
 DTEND:20261121T164000Z
 SUMMARY:🏉 Springboks vs Nations Championship
@@ -306,8 +306,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Springboks v Nations Champi
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261121-237@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261121-236@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261121T144000Z
 DTEND:20261121T164000Z
 SUMMARY:🏉 Italy vs V
@@ -316,8 +316,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Italy v V\n\nNeed to update
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261121-238@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261121-237@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261121T144000Z
 DTEND:20261121T164000Z
 SUMMARY:🏉 Fiji vs Nations Championship
@@ -326,28 +326,8 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: Fiji v Nations Championship
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261121-239@sarugby
-DTSTAMP:20260821T091956Z
-DTSTART:20261121T181000Z
-DTEND:20261121T201000Z
-SUMMARY:🏉 Wales vs V
-LOCATION:Principality Stadium, Cardiff
-DESCRIPTION:Tournament: Nations Championship\nMatch: Wales v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-match-20261121-240@sarugby
-DTSTAMP:20260821T091956Z
-DTSTART:20261121T181000Z
-DTEND:20261121T201000Z
-SUMMARY:🏉 Australia vs Nations Championship
-LOCATION:Saturday, 21 November 2026
-DESCRIPTION:Tournament: Nations Championship\nMatch: Australia v Nations Championship\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-match-20261121-241@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261121-238@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261121T181000Z
 DTEND:20261121T201000Z
 SUMMARY:🏉 France vs V
@@ -356,13 +336,33 @@ DESCRIPTION:Tournament: Nations Championship\nMatch: France v V\n\nNeed to updat
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
-UID:sarugby-match-20261121-242@sarugby
-DTSTAMP:20260821T091956Z
+UID:sarugby-match-20261121-239@sarugby
+DTSTAMP:20260821T115046Z
 DTSTART:20261121T181000Z
 DTEND:20261121T201000Z
 SUMMARY:🏉 Argentina vs Nations Championship
-LOCATION:Friday, 4 December 2026
+LOCATION:Saturday, 21 November 2026
 DESCRIPTION:Tournament: Nations Championship\nMatch: Argentina v Nations Championship\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261121-240@sarugby
+DTSTAMP:20260821T115046Z
+DTSTART:20261121T181000Z
+DTEND:20261121T201000Z
+SUMMARY:🏉 Wales vs V
+LOCATION:Principality Stadium, Cardiff
+DESCRIPTION:Tournament: Nations Championship\nMatch: Wales v V\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:sarugby-match-20261121-241@sarugby
+DTSTAMP:20260821T115046Z
+DTSTART:20261121T181000Z
+DTEND:20261121T201000Z
+SUMMARY:🏉 Australia vs Nations Championship
+LOCATION:Friday, 4 December 2026
+DESCRIPTION:Tournament: Nations Championship\nMatch: Australia v Nations Championship\n\nNeed to update subscriptions?\nCheck GitHub: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR
