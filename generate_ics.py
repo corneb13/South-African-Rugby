@@ -9,13 +9,11 @@ import time
 FIXTURE_URL = "https://springboks.rugby/match-centre/fixtures"
 
 def create_ics_event(summary, start_dt_utc, end_dt_utc, location, description, uid_id):
-    # Using 'Z' format enforces standard UTC, allowing subscriber calendar apps 
-    # to automatically convert event times to their local device timezone.
     fmt = "%Y%m%dT%H%M%SZ"
     dtstamp = datetime.now(timezone.utc).strftime(fmt)
     return (
         "BEGIN:VEVENT\n"
-        f"UID:sarugby-match-{uid_id}@sarugby\n"
+        f"UID:sarugby-springbok-{uid_id}@sarugby\n"
         f"DTSTAMP:{dtstamp}\n"
         f"DTSTART:{start_dt_utc.strftime(fmt)}\n"
         f"DTEND:{end_dt_utc.strftime(fmt)}\n"
@@ -25,10 +23,6 @@ def create_ics_event(summary, start_dt_utc, end_dt_utc, location, description, u
         "STATUS:CONFIRMED\n"
         "END:VEVENT\n"
     )
-
-def sanitize_filename(name):
-    clean = re.sub(r'[^a-zA-Z0-9\s]', '', name)
-    return clean.strip().replace(' ', '_').lower() + '.ics'
 
 def format_team(team_name):
     flags = {
@@ -44,7 +38,7 @@ def format_team(team_name):
         "portugal": "🇵🇹", "spain": "🇪🇸", "usa": "🇺🇸",
         "canada": "🇨🇦", "namibia": "🇳🇦", "romania": "🇷🇴",
         "chile": "🇨🇱", "british & irish lions": "🦁",
-        "zimbabwe": "🇿🇼", "kenya": "🇰🇪"
+        "zimbabwe": "🇿🇼", "kenya": "🇰🇪", "barbarians": "🏁", "barbarian f.c.": "🏁"
     }
     
     lower_team = team_name.lower().strip()
@@ -56,7 +50,7 @@ def format_team(team_name):
         if lower_team.startswith(key):
             return f"{flag} {team_name} 🏉"
             
-    return None
+    return f"🏳️ {team_name} 🏉"
 
 def fetch_and_build_calendar():
     print("Starting headless browser...")
@@ -97,8 +91,7 @@ def fetch_and_build_calendar():
     driver.quit()
 
     soup = BeautifulSoup(html, "html.parser")
-    
-    calendars = {}
+    events = []
     
     current_date = None
     match_count = 0
@@ -139,10 +132,9 @@ def fetch_and_build_calendar():
                     away_team = lines[idx + 4] if idx + 4 < len(lines) else away_team
 
                 venue_info = "South Africa"
-                comp_info = "SA Rugby Fixture" 
+                comp_info = "International Fixture" 
                 
                 comp_keywords = ["Cup", "Division", "Shield", "Championship", "League", "Test", "Tour", "Series", "International"]
-                intl_keywords = ["Test", "Tour", "Series", "International", "Championship", "World Cup"]
                 
                 for offset in range(3, 8):
                     if idx + offset < len(lines):
@@ -152,71 +144,61 @@ def fetch_and_build_calendar():
                         elif any(k in check_line for k in comp_keywords):
                             comp_info = check_line
 
-                # Convert local SAST time (UTC+2) to standard UTC
-                sast_dt = datetime(current_date[0], current_date[1], current_date[2], hour, minute)
-                utc_start = (sast_dt - timedelta(hours=2)).replace(tzinfo=timezone.utc)
-                utc_end = utc_start + timedelta(hours=2)
+                # Filter strictly for Senior Men's Springboks / South Africa matches
+                teams_text = f"{home_team.lower()} {away_team.lower()}"
+                is_sa_team = "south africa" in teams_text or "springbok" in teams_text
+                is_excluded = any(ex in f"{teams_text} {comp_info.lower()}" for ex in ["women", "u20", "u21", "under 20", "under 21", "junior"])
 
-                # Emoji formatting for international fixtures
-                display_home = home_team
-                display_away = away_team
-                is_international = any(k in comp_info for k in intl_keywords)
-                
-                if is_international:
-                    h_fmt = format_team(home_team)
-                    a_fmt = format_team(away_team)
+                if is_sa_team and not is_excluded:
+                    # Convert SAST local time (UTC+2) to standard UTC
+                    sast_dt = datetime(current_date[0], current_date[1], current_date[2], hour, minute)
+                    utc_start = (sast_dt - timedelta(hours=2)).replace(tzinfo=timezone.utc)
+                    utc_end = utc_start + timedelta(hours=2)
+
+                    display_home = format_team(home_team)
+                    display_away = format_team(away_team)
+
+                    summary = f"{display_home} vs {display_away}"
                     
-                    if h_fmt or a_fmt:
-                        display_home = h_fmt if h_fmt else f"🏳️ {home_team} 🏉"
-                        display_away = a_fmt if a_fmt else f"🏳️ {away_team} 🏉"
+                    description = (
+                        f"Tournament: {comp_info}\\n"
+                        f"Match: {display_home} v {display_away}\\n\\n"
+                        f"Need to update subscriptions?\\n"
+                        f"Check GitHub: https://github.com/corneb13/South-African-Rugby/actions"
+                    )
 
-                summary = f"{display_home} vs {display_away}"
-                
-                description = (
-                    f"Tournament: {comp_info}\\n"
-                    f"Match: {display_home} v {display_away}\\n\\n"
-                    f"Need to update subscriptions?\\n"
-                    f"Check GitHub: https://github.com/corneb13/South-African-Rugby/actions"
-                )
-
-                match_count += 1
-                event_str = create_ics_event(
-                    summary=summary,
-                    start_dt_utc=utc_start,
-                    end_dt_utc=utc_end,
-                    location=venue_info,
-                    description=description,
-                    uid_id=f"{current_date[0]}{current_date[1]:02d}{current_date[2]:02d}-{match_count}"
-                )
-                
-                if comp_info not in calendars:
-                    calendars[comp_info] = []
-                calendars[comp_info].append(event_str)
+                    match_count += 1
+                    event_str = create_ics_event(
+                        summary=summary,
+                        start_dt_utc=utc_start,
+                        end_dt_utc=utc_end,
+                        location=venue_info,
+                        description=description,
+                        uid_id=f"{current_date[0]}{current_date[1]:02d}{current_date[2]:02d}-{match_count}"
+                    )
+                    events.append(event_str)
                 
             except Exception as e:
                 print(f"Error parsing fixture around line {idx}: {e}")
 
         idx += 1
 
-    for comp_name, events_list in calendars.items():
-        filename = sanitize_filename(comp_name)
-        
-        ics_content = (
-            "BEGIN:VCALENDAR\n"
-            "VERSION:2.0\n"
-            f"PRODID:-//South African Rugby - {comp_name}//EN\n"
-            "CALSCALE:GREGORIAN\n"
-            "METHOD:PUBLISH\n"
-            f"X-WR-CALNAME:{comp_name}\n"
-            "X-WR-TIMEZONE:Africa/Johannesburg\n"
-            + "".join(events_list)
-            + "END:VCALENDAR\n"
-        )
+    ics_content = (
+        "BEGIN:VCALENDAR\n"
+        "VERSION:2.0\n"
+        "PRODID:-//Springboks Fixtures//EN\n"
+        "CALSCALE:GREGORIAN\n"
+        "METHOD:PUBLISH\n"
+        "X-WR-CALNAME:Springboks Fixtures\n"
+        "X-WR-TIMEZONE:Africa/Johannesburg\n"
+        + "".join(events)
+        + "END:VCALENDAR\n"
+    )
 
-        with open(filename, "w", encoding="utf-8") as f:
-            f.write(ics_content)
-            
-        print(f"Successfully generated {filename} with {len(events_list)} fixtures!")
+    with open("springboks.ics", "w", encoding="utf-8") as f:
+        f.write(ics_content)
+        
+    print(f"Successfully generated springboks.ics with {len(events)} Springbok fixtures!")
 
 if __name__ == "__main__":
     fetch_and_build_calendar()
