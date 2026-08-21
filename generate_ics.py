@@ -8,15 +8,16 @@ import time
 
 FIXTURE_URL = "https://springboks.rugby/match-centre/fixtures"
 
-def create_ics_event(summary, start_dt_utc, end_dt_utc, location, description, uid_id):
-    fmt = "%Y%m%dT%H%M%SZ"
-    dtstamp = datetime.now(timezone.utc).strftime(fmt)
+def create_ics_event(summary, start_dt, end_dt, location, description, uid_id):
+    # Removed the trailing 'Z' and forced the local South African Timezone ID
+    fmt = "%Y%m%dT%H%M%S"
+    dtstamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     return (
         "BEGIN:VEVENT\n"
         f"UID:sarugby-springbok-{uid_id}@sarugby\n"
         f"DTSTAMP:{dtstamp}\n"
-        f"DTSTART:{start_dt_utc.strftime(fmt)}\n"
-        f"DTEND:{end_dt_utc.strftime(fmt)}\n"
+        f"DTSTART;TZID=Africa/Johannesburg:{start_dt.strftime(fmt)}\n"
+        f"DTEND;TZID=Africa/Johannesburg:{end_dt.strftime(fmt)}\n"
         f"SUMMARY:{summary}\n"
         f"LOCATION:{location}\n"
         f"DESCRIPTION:{description}\n"
@@ -101,6 +102,7 @@ def fetch_and_build_calendar():
 
     date_pattern = re.compile(r'^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),\s+(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$')
     time_pattern = re.compile(r'^(\d{2}):(\d{2})$')
+    month_header_pattern = re.compile(r'^(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}$', re.IGNORECASE)
 
     idx = 0
     while idx < len(lines):
@@ -125,34 +127,38 @@ def fetch_and_build_calendar():
             minute = int(time_match.group(2))
 
             try:
-                home_team = lines[idx + 1] if idx + 1 < len(lines) else "TBD"
-                away_team = lines[idx + 3] if idx + 3 < len(lines) else "TBD"
+                # SMART PARSER: Gather all info blocks safely without strict line indexing
+                chunk = []
+                for offset in range(1, 15):
+                    if idx + offset >= len(lines):
+                        break
+                    val = lines[idx + offset].strip()
+                    if not val:
+                        continue
+                    
+                    # Stop if we hit the next time, date, or month grouping
+                    if time_pattern.match(val) or date_pattern.match(val) or month_header_pattern.match(val):
+                        break
+                        
+                    # Explicitly ignore the solitary "V" or "v" between teams
+                    if val.lower() != 'v':
+                        chunk.append(val)
                 
-                if home_team == lines[idx + 2] if idx + 2 < len(lines) else "":
-                    away_team = lines[idx + 4] if idx + 4 < len(lines) else away_team
+                # Assign variables cleanly based on the chunk sequence
+                home_team = chunk[0] if len(chunk) > 0 else "TBD"
+                away_team = chunk[1] if len(chunk) > 1 else "TBD"
+                venue_info = chunk[2] if len(chunk) > 2 else "South Africa"
+                comp_info = chunk[3] if len(chunk) > 3 else "International Fixture"
 
-                venue_info = "South Africa"
-                comp_info = "International Fixture" 
-                
-                comp_keywords = ["Cup", "Division", "Shield", "Championship", "League", "Test", "Tour", "Series", "International"]
-                
-                for offset in range(3, 8):
-                    if idx + offset < len(lines):
-                        check_line = lines[idx + offset]
-                        if "," in check_line:
-                            venue_info = check_line
-                        elif any(k in check_line for k in comp_keywords):
-                            comp_info = check_line
-
-                # FIX: Broadened matching for South Africa while excluding junior/women teams
                 teams_text = f"{home_team.lower()} {away_team.lower()}"
                 is_sa_team = "south africa" in teams_text or "springbok" in teams_text
                 is_excluded = any(ex in f"{teams_text} {comp_info.lower()}" for ex in ["women", "u20", "u21", "under 20", "under 21", "junior", "women's"])
 
                 if is_sa_team and not is_excluded:
-                    sast_dt = datetime(current_date[0], current_date[1], current_date[2], hour, minute)
-                    utc_start = (sast_dt - timedelta(hours=2)).replace(tzinfo=timezone.utc)
-                    utc_end = utc_start + timedelta(hours=2)
+                    
+                    # Native SAST time application (no UTC conversion)
+                    sast_start = datetime(current_date[0], current_date[1], current_date[2], hour, minute)
+                    sast_end = sast_start + timedelta(hours=2)
 
                     display_home = format_team(home_team)
                     display_away = format_team(away_team)
@@ -169,8 +175,8 @@ def fetch_and_build_calendar():
                     match_count += 1
                     event_str = create_ics_event(
                         summary=summary,
-                        start_dt_utc=utc_start,
-                        end_dt_utc=utc_end,
+                        start_dt=sast_start,
+                        end_dt=sast_end,
                         location=venue_info,
                         description=description,
                         uid_id=f"{current_date[0]}{current_date[1]:02d}{current_date[2]:02d}-{match_count}"
