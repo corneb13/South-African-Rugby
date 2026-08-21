@@ -16,283 +16,83 @@ DTSTART:19700101T000000
 END:STANDARD
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:sarugby-springbok-20260822-150@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20260822T150000
-DTEND;TZID=Africa/Johannesburg:20260822T170000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Opponent 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🏳️ Opponent 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20260822-160@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20260822T160000
-DTEND;TZID=Africa/Johannesburg:20260822T180000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🇳🇿 New Zealand 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🇳🇿 New Zealand 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
 UID:sarugby-springbok-20260822-1710@sarugby
-DTSTAMP:20260821T133855Z
+DTSTAMP:20260821T135024Z
 DTSTART;TZID=Africa/Johannesburg:20260822T171000
 DTEND;TZID=Africa/Johannesburg:20260822T191000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🇳🇿 New Zealand 🏉
+SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ TBD 🏉
 LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🇳🇿 New Zealand 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20260829-140@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20260829T140000
-DTEND;TZID=Africa/Johannesburg:20260829T160000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Opponent 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🏳️ Opponent 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20260829-150@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20260829T150000
-DTEND;TZID=Africa/Johannesburg:20260829T170000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🇳🇿 New Zealand 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🇳🇿 New Zealand 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
+DESCRIPTION:Tournament: International Fixture\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ TBD 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
 UID:sarugby-springbok-20260829-1710@sarugby
-DTSTAMP:20260821T133855Z
+DTSTAMP:20260821T135024Z
 DTSTART;TZID=Africa/Johannesburg:20260829T171000
 DTEND;TZID=Africa/Johannesburg:20260829T191000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🇳🇿 New Zealand 🏉
+SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ TBD 🏉
 LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🇳🇿 New Zealand 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20260904-140@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20260904T140000
-DTEND;TZID=Africa/Johannesburg:20260904T160000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Opponent 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🏳️ Opponent 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20260905-120@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20260905T120000
-DTEND;TZID=Africa/Johannesburg:20260905T140000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🇳🇿 New Zealand 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🇳🇿 New Zealand 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20260905-1330@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20260905T133000
-DTEND;TZID=Africa/Johannesburg:20260905T153000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🇳🇿 New Zealand 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🇳🇿 New Zealand 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20260905-140@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20260905T140000
-DTEND;TZID=Africa/Johannesburg:20260905T160000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Opponent 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🏳️ Opponent 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20260905-140@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20260905T140000
-DTEND;TZID=Africa/Johannesburg:20260905T160000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🇳🇿 New Zealand 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🇳🇿 New Zealand 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
+DESCRIPTION:Tournament: International Fixture\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ TBD 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
 UID:sarugby-springbok-20260905-1710@sarugby
-DTSTAMP:20260821T133855Z
+DTSTAMP:20260821T135024Z
 DTSTART;TZID=Africa/Johannesburg:20260905T171000
 DTEND;TZID=Africa/Johannesburg:20260905T191000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🇳🇿 New Zealand 🏉
+SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ TBD 🏉
 LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🇳🇿 New Zealand 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20260912-140@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20260912T140000
-DTEND;TZID=Africa/Johannesburg:20260912T160000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Opponent 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🏳️ Opponent 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20260912-150@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20260912T150000
-DTEND;TZID=Africa/Johannesburg:20260912T170000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🇳🇿 New Zealand 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🇳🇿 New Zealand 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
+DESCRIPTION:Tournament: International Fixture\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ TBD 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
 UID:sarugby-springbok-20260912-230@sarugby
-DTSTAMP:20260821T133855Z
+DTSTAMP:20260821T135024Z
 DTSTART;TZID=Africa/Johannesburg:20260912T230000
 DTEND;TZID=Africa/Johannesburg:20260913T010000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🇳🇿 New Zealand 🏉
+SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ TBD 🏉
 LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🇳🇿 New Zealand 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20260926-2045@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20260926T204500
-DTEND;TZID=Africa/Johannesburg:20260926T224500
-SUMMARY:🇦🇺 Australia 🏉 vs 🇿🇦 Springboks 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇦🇺 Australia 🏉 v 🇿🇦 Springboks 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
+DESCRIPTION:Tournament: International Fixture\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ TBD 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
 UID:sarugby-springbok-20260927-1130@sarugby
-DTSTAMP:20260821T133855Z
+DTSTAMP:20260821T135024Z
 DTSTART;TZID=Africa/Johannesburg:20260927T113000
 DTEND;TZID=Africa/Johannesburg:20260927T133000
-SUMMARY:🇦🇺 Australia 🏉 vs 🇿🇦 Springboks 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇦🇺 Australia 🏉 v 🇿🇦 Springboks 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20260927-1130@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20260927T113000
-DTEND;TZID=Africa/Johannesburg:20260927T133000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ Opponent 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🏳️ Opponent 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20261106-2210@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20261106T221000
-DTEND;TZID=Africa/Johannesburg:20261107T001000
-SUMMARY:🇮🇪 Ireland 🏉 vs 🇦🇷 Argentina 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇮🇪 Ireland 🏉 v 🇦🇷 Argentina 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20261106-2210@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20261106T221000
-DTEND;TZID=Africa/Johannesburg:20261107T001000
-SUMMARY:🇦🇷 Argentina 🏉 vs 🇮🇹 Italy 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇦🇷 Argentina 🏉 v 🇮🇹 Italy 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
+SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ TBD 🏉
+LOCATION:Optus Stadium, Perth
+DESCRIPTION:Tournament: Internationals\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ TBD 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
 UID:sarugby-springbok-20261107-1340@sarugby
-DTSTAMP:20260821T133855Z
+DTSTAMP:20260821T135024Z
 DTSTART;TZID=Africa/Johannesburg:20261107T134000
 DTEND;TZID=Africa/Johannesburg:20261107T154000
-SUMMARY:🇮🇹 Italy 🏉 vs 🇿🇦 Springboks 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇮🇹 Italy 🏉 v 🇿🇦 Springboks 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20261107-1340@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20261107T134000
-DTEND;TZID=Africa/Johannesburg:20261107T154000
-SUMMARY:🇿🇦 Springboks 🏉 vs 🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20261108-1710@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20261108T171000
-DTEND;TZID=Africa/Johannesburg:20261108T191000
-SUMMARY:🏴󠁧󠁢󠁥󠁮󠁧󠁿 England 🏉 vs 🇦🇺 Australia 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🏴󠁧󠁢󠁥󠁮󠁧󠁿 England 🏉 v 🇦🇺 Australia 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20261108-1710@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20261108T171000
-DTEND;TZID=Africa/Johannesburg:20261108T191000
-SUMMARY:🇦🇺 Australia 🏉 vs 🇫🇷 France 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇦🇺 Australia 🏉 v 🇫🇷 France 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
+SUMMARY:🇿🇦 Springboks 🏉 vs 🏳️ TBD 🏉
+LOCATION:Allianz Stadium, Turin
+DESCRIPTION:Tournament: Nations Championship\nMatch: 🇿🇦 Springboks 🏉 v 🏳️ TBD 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
 UID:sarugby-springbok-20261113-2210@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20261113T221000
-DTEND;TZID=Africa/Johannesburg:20261114T001000
-SUMMARY:🇫🇷 France 🏉 vs 🇿🇦 Springboks 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇫🇷 France 🏉 v 🇿🇦 Springboks 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20261113-2210@sarugby
-DTSTAMP:20260821T133855Z
+DTSTAMP:20260821T135024Z
 DTSTART;TZID=Africa/Johannesburg:20261113T221000
 DTEND;TZID=Africa/Johannesburg:20261114T001000
 SUMMARY:🇿🇦 Springboks 🏉 vs 🇫🇷 France 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇿🇦 Springboks 🏉 v 🇫🇷 France 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
+LOCATION:Nations Championship
+DESCRIPTION:Tournament: Match Info\nMatch: 🇿🇦 Springboks 🏉 v 🇫🇷 France 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 BEGIN:VEVENT
 UID:sarugby-springbok-20261114-1340@sarugby
-DTSTAMP:20260821T133855Z
+DTSTAMP:20260821T135024Z
 DTSTART;TZID=Africa/Johannesburg:20261114T134000
 DTEND;TZID=Africa/Johannesburg:20261114T154000
-SUMMARY:🇮🇹 Italy 🏉 vs 🇦🇷 Argentina 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇮🇹 Italy 🏉 v 🇦🇷 Argentina 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:sarugby-springbok-20261114-1340@sarugby
-DTSTAMP:20260821T133855Z
-DTSTART;TZID=Africa/Johannesburg:20261114T134000
-DTEND;TZID=Africa/Johannesburg:20261114T154000
-SUMMARY:🇦🇷 Argentina 🏉 vs 🇿🇦 Springboks 🏉
-LOCATION:South Africa
-DESCRIPTION:Match: 🇦🇷 Argentina 🏉 v 🇿🇦 Springboks 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
+SUMMARY:🇦🇷 Argentina 🏉 vs 🇿🇦 South Africa 🏉
+LOCATION:Venue TBD
+DESCRIPTION:Tournament: Nations Championship\nMatch: 🇦🇷 Argentina 🏉 v 🇿🇦 South Africa 🏉\n\nCheck GitHub Feed: https://github.com/corneb13/South-African-Rugby/actions
 STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR
