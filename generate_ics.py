@@ -97,18 +97,20 @@ def fetch_and_build_calendar():
     current_date = None
     seen_fixtures = set()
 
-    month_year_pattern = re.compile(r'^(JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER)\s+(\d{4})$', re.IGNORECASE)
-    date_pattern = re.compile(r'^(?:(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*[\s,]+)?(\d{1,2})\s+([A-Za-z]+)(?:[\s,]+(\d{4}))?$', re.IGNORECASE)
-    time_pattern = re.compile(r'^(\d{1,2})[:h](\d{2})$')
+    # Explicit Month Regex to prevent false matches on names like '10BET'
+    MONTHS_REGEX = r'(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|January|February|March|April|June|July|August|September|October|November|December)'
+    
+    month_year_pattern = re.compile(rf'^({MONTHS_REGEX})\s+(\d{{4}})$', re.IGNORECASE)
+    date_pattern = re.compile(rf'^(?:(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*[\s,]+)?(\d{{1,2}})\s+({MONTHS_REGEX})(?:[\s,]+(\d{{4}}))?$', re.IGNORECASE)
+    time_pattern = re.compile(r'^([01]?\d|2[0-3])[:h]([0-5]\d)$')
 
     team_keywords = {
         "springboks": "Springboks", "springbok": "Springboks", "south africa": "Springboks",
-        "all blacks": "New Zealand", "new zealand": "New Zealand",
-        "wallabies": "Australia", "australia": "Australia",
-        "los pumas": "Argentina", "argentina": "Argentina",
-        "england": "England", "ireland": "Ireland",
-        "wales": "Wales", "scotland": "Scotland",
-        "france": "France", "italy": "Italy",
+        "new zealand": "New Zealand", "all blacks": "New Zealand",
+        "australia": "Australia", "wallabies": "Australia",
+        "argentina": "Argentina", "los pumas": "Argentina", "pumas": "Argentina",
+        "england": "England", "ireland": "Ireland", "wales": "Wales",
+        "scotland": "Scotland", "france": "France", "italy": "Italy",
         "fiji": "Fiji", "samoa": "Samoa", "tonga": "Tonga",
         "japan": "Japan", "georgia": "Georgia", "uruguay": "Uruguay",
         "portugal": "Portugal", "spain": "Spain", "usa": "USA",
@@ -132,7 +134,7 @@ def fetch_and_build_calendar():
             month_str = date_match.group(2)
             year_num = int(date_match.group(3)) if date_match.group(3) else current_year
             try:
-                month_num = datetime.strptime(month_str[:3], "%b").month
+                month_num = datetime.strptime(month_str[:3].title(), "%b").month
                 current_date = (year_num, month_num, day_num)
             except ValueError:
                 pass
@@ -154,65 +156,68 @@ def fetch_and_build_calendar():
                 offset += 1
 
             idx += offset - 1
-            text_block = " ".join(match_info).lower()
+            text_block = " ".join(match_info)
+            text_block_lower = text_block.lower()
             
-            # STRICT FILTER
-            if "springbok" not in text_block and "south africa" not in text_block:
+            # STRICT FILTER: Ensure Springboks are part of this fixture block
+            if "springbok" not in text_block_lower and "south africa" not in text_block_lower:
                 idx += 1
                 continue
 
-            is_excluded = any(ex in text_block for ex in ["women", "u20", "u21", "under 20", "under 21", "junior"])
+            is_excluded = any(ex in text_block_lower for ex in ["women", "u20", "u21", "under 20", "under 21", "junior"])
             if not is_excluded:
                 junk = ["v", "vs", "not started", "upcoming", "live", "ft", "full time", "match centre", "tbc", "tickets", "buy tickets", "view more", "find out more", "match info"]
                 
                 found_teams = []
-                other_info = []
+                matches_in_block = []
 
-                for item in match_info:
-                    item_lower = item.lower().strip()
-                    if item_lower in junk:
-                        continue
-                    
-                    # Prevent venue names from causing a false team match
-                    safe_item = item_lower.replace("stade de france", "sdf_venue")
-                    
-                    teams_in_line = []
-                    for kw, canonical in team_keywords.items():
-                        position = safe_item.find(kw)
-                        if position != -1:
-                            teams_in_line.append((position, canonical))
-                            
-                    if teams_in_line:
-                        # Sort by their position in the sentence to maintain Home v Away order
-                        teams_in_line.sort(key=lambda x: x[0])
-                        for pos, canonical in teams_in_line:
-                            if canonical not in found_teams:
-                                found_teams.append(canonical)
-                    else:
-                        if item.strip() and item.strip() not in other_info:
-                            other_info.append(item.strip())
-
-                if "Springboks" not in found_teams:
-                    found_teams.append("Springboks")
+                for kw, canonical in team_keywords.items():
+                    pattern = rf'\b{re.escape(kw)}\b'
+                    for match in re.finditer(pattern, text_block_lower):
+                        matches_in_block.append((match.start(), canonical))
+                
+                matches_in_block.sort(key=lambda x: x[0])
+                
+                for pos, canonical in matches_in_block:
+                    if canonical not in found_teams:
+                        found_teams.append(canonical)
 
                 if len(found_teams) >= 2:
                     home_team = found_teams[0]
                     away_team = found_teams[1]
+                elif len(found_teams) == 1:
+                    if found_teams[0] == "Springboks":
+                        home_team = "Springboks"
+                        away_team = "TBD"
+                    else:
+                        home_team = found_teams[0]
+                        away_team = "Springboks"
                 else:
-                    home_team = found_teams[0]
+                    home_team = "Springboks"
                     away_team = "TBD"
+
+                other_lines = []
+                for item in match_info:
+                    item_clean = item.strip()
+                    item_lower = item_clean.lower()
+                    if item_lower in junk:
+                        continue
+                    if any(kw in item_lower for kw in team_keywords.keys()):
+                        continue
+                    if item_clean and item_clean not in other_lines:
+                        other_lines.append(item_clean)
 
                 venue = "South Africa"
                 tournament = "International Fixture"
 
-                for info in other_info:
-                    lower_info = info.lower()
-                    if any(kw in lower_info for kw in ["stadium", "park", "ellis", "loftus", "kings", "arena", "field", "stadion", "stade", "aviva", "twickenham", "murrayfield"]):
+                for info in other_lines:
+                    info_lower = info.lower()
+                    if any(kw in info_lower for kw in ["stadium", "park", "ellis", "loftus", "kings", "arena", "field", "stadion", "stade", "aviva", "twickenham", "murrayfield", "optus", "allianz", "fnb", "dhl", "m&t"]):
                         venue = info.title() if info.isupper() else info
                         break
 
-                for info in other_info:
-                    if info != venue and len(info) > 4:
+                for info in other_lines:
+                    if info != venue and len(info) > 3:
                         tournament = info.title() if info.isupper() else info
                         break
 
@@ -270,7 +275,7 @@ def fetch_and_build_calendar():
     with open("springboks.ics", "w", encoding="utf-8") as f:
         f.write(ics_content)
         
-    print(f"Successfully generated springboks.ics with {len(events)} correctly formatted fixtures!")
+    print(f"Successfully generated springboks.ics with {len(events)} correctly parsed Springbok fixtures!")
 
 if __name__ == "__main__":
     fetch_and_build_calendar()
