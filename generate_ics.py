@@ -81,6 +81,12 @@ def fetch_and_build_calendar():
     soup = BeautifulSoup(driver.page_source, "html.parser")
     driver.quit()
 
+    # Extract alt text from images just in case team names are hidden in logos
+    for img in soup.find_all('img'):
+        alt_text = img.get('alt', '').strip()
+        if alt_text:
+            img.replace_with(f" {alt_text} ")
+
     raw_lines = [line.strip() for line in soup.get_text(separator="\n").splitlines() if line.strip()]
     lines = []
     for l in raw_lines:
@@ -97,35 +103,18 @@ def fetch_and_build_calendar():
     time_pattern = re.compile(r'^(\d{1,2})[:h](\d{2})$')
 
     team_keywords = {
-        "springbok": "Springboks",
-        "south africa": "Springboks",
-        "all black": "New Zealand",
-        "new zealand": "New Zealand",
-        "wallab": "Australia",
-        "australia": "Australia",
-        "pumas": "Argentina",
-        "argentina": "Argentina",
-        "england": "England",
-        "ireland": "Ireland",
-        "wales": "Wales",
-        "scotland": "Scotland",
-        "france": "France",
-        "italy": "Italy",
-        "fiji": "Fiji",
-        "samoa": "Samoa",
-        "tonga": "Tonga",
-        "japan": "Japan",
-        "georgia": "Georgia",
-        "uruguay": "Uruguay",
-        "portugal": "Portugal",
-        "spain": "Spain",
-        "usa": "USA",
-        "canada": "Canada",
-        "namibia": "Namibia",
-        "romania": "Romania",
-        "chile": "Chile",
-        "british & irish lions": "British & Irish Lions",
-        "barbarians": "Barbarians"
+        "springboks": "Springboks", "springbok": "Springboks", "south africa": "Springboks",
+        "all blacks": "New Zealand", "new zealand": "New Zealand",
+        "wallabies": "Australia", "australia": "Australia",
+        "los pumas": "Argentina", "argentina": "Argentina",
+        "england": "England", "ireland": "Ireland",
+        "wales": "Wales", "scotland": "Scotland",
+        "france": "France", "italy": "Italy",
+        "fiji": "Fiji", "samoa": "Samoa", "tonga": "Tonga",
+        "japan": "Japan", "georgia": "Georgia", "uruguay": "Uruguay",
+        "portugal": "Portugal", "spain": "Spain", "usa": "USA",
+        "canada": "Canada", "namibia": "Namibia", "romania": "Romania",
+        "chile": "Chile", "british & irish lions": "British & Irish Lions", "barbarians": "Barbarians"
     }
 
     idx = 0
@@ -166,12 +155,17 @@ def fetch_and_build_calendar():
                 offset += 1
 
             idx += offset - 1
-
             text_block = " ".join(match_info).lower()
-            is_excluded = any(ex in text_block for ex in ["women", "u20", "u21", "under 20", "under 21", "junior"])
+            
+            # STRICT FILTER: Skip if this specific block doesn't explicitly mention the Springboks.
+            if "springbok" not in text_block and "south africa" not in text_block:
+                idx += 1
+                continue
 
+            # Skip Junior/Women teams
+            is_excluded = any(ex in text_block for ex in ["women", "u20", "u21", "under 20", "under 21", "junior"])
             if not is_excluded:
-                junk = ["v", "vs", "not started", "upcoming", "live", "ft", "full time", "match centre", "tbc", "tickets", "buy tickets", "view more", "find out more"]
+                junk = ["v", "vs", "not started", "upcoming", "live", "ft", "full time", "match centre", "tbc", "tickets", "buy tickets", "view more", "find out more", "match info"]
                 
                 found_teams = []
                 other_info = []
@@ -183,7 +177,8 @@ def fetch_and_build_calendar():
                     
                     matched_team = None
                     for kw, canonical in team_keywords.items():
-                        if kw in item_lower:
+                        # Protect against venues matching team names (e.g. Stade de France -> France)
+                        if kw == item_lower or (kw in item_lower and "stade" not in item_lower and "stadium" not in item_lower and "park" not in item_lower):
                             matched_team = canonical
                             break
                     
@@ -194,31 +189,29 @@ def fetch_and_build_calendar():
                         if item.strip() and item.strip() not in other_info:
                             other_info.append(item.strip())
 
-                if not any(t == "Springboks" for t in found_teams):
-                    found_teams.insert(0, "Springboks")
+                # Ensure Springboks are included if they were caught in the block but missed in the line iteration
+                if "Springboks" not in found_teams:
+                    found_teams.append("Springboks")
 
                 if len(found_teams) >= 2:
                     home_team = found_teams[0]
                     away_team = found_teams[1]
-                elif len(found_teams) == 1:
-                    home_team = found_teams[0]
-                    away_team = "New Zealand" if "new zealand" not in home_team.lower() else "Springboks"
                 else:
-                    home_team = "Springboks"
-                    away_team = "Opponent"
+                    home_team = found_teams[0]
+                    away_team = "TBD"
 
                 venue = "South Africa"
                 tournament = "International Fixture"
 
                 for info in other_info:
                     lower_info = info.lower()
-                    if any(kw in lower_info for kw in ["stadium", "park", "ellis", "loftus", "kings", "arena", "field", "stadion"]):
-                        venue = info
+                    if any(kw in lower_info for kw in ["stadium", "park", "ellis", "loftus", "kings", "arena", "field", "stadion", "stade", "aviva", "twickenham", "murrayfield"]):
+                        venue = info.title() if info.isupper() else info
                         break
 
                 for info in other_info:
-                    if info != venue and len(info) > 3:
-                        tournament = info
+                    if info != venue and len(info) > 4:
+                        tournament = info.title() if info.isupper() else info
                         break
 
                 fixture_key = f"{current_date[0]}-{current_date[1]}-{current_date[2]}-{hour}:{minute}-{home_team}-{away_team}"
@@ -275,7 +268,7 @@ def fetch_and_build_calendar():
     with open("springboks.ics", "w", encoding="utf-8") as f:
         f.write(ics_content)
         
-    print(f"Successfully generated springboks.ics with {len(events)} Springbok fixtures!")
+    print(f"Successfully generated springboks.ics with {len(events)} strictly verified Springbok fixtures!")
 
 if __name__ == "__main__":
     fetch_and_build_calendar()
