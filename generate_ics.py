@@ -44,31 +44,40 @@ def format_team(team_name):
 
 def main():
     options = Options()
-    options.add_argument('--headless')
+    options.add_argument('--headless=new') # Better headless mode to avoid bot detection
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     options.add_argument('--window-size=1920,1080')
-    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
+    # Add a realistic User-Agent so World Rugby doesn't block the request
+    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 
+    print("Fetching World Rugby fixtures...")
     driver = webdriver.Chrome(options=options)
     driver.get(FIXTURE_URL)
-    time.sleep(6)  # Give World Rugby's react frontend time to hydrate
+    
+    # Give it a bit more time to hydrate, just in case
+    time.sleep(8) 
     page_source = driver.page_source
     driver.quit()
 
+    # --- DEBUGGING STEP ---
+    # Save the HTML to a file so you can visually verify if the page loaded correctly
+    # and if the Springboks are actually present in the HTML structure.
+    with open("debug_page.html", "w", encoding="utf-8") as f:
+        f.write(page_source)
+    print("Saved 'debug_page.html'. If no fixtures are found, open this file to see what the scraper actually saw.")
+
     soup = BeautifulSoup(page_source, 'html.parser')
-    
-    # World Rugby fixtures container parser
     events = []
     seen_fixtures = set()
 
-    # Extract match elements or fallback to structured text blocks
     text_blocks = soup.get_text(separator="\n").splitlines()
     clean_lines = [line.strip() for line in text_blocks if line.strip()]
 
-    # Pattern matchers
-    time_pattern = re.compile(r'^([01]?\d|2[0-3]):([0-5]\d)$')
-    date_pattern = re.compile(r'^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)?\s*(\d{1,2})\s+([A-Za-z]{3,})\s+(\d{4})$', re.IGNORECASE)
+    # Relaxed pattern matchers (removed ^ and $ so it finds the pattern anywhere in the line)
+    time_pattern = re.compile(r'\b([01]?\d|2[0-3]):([0-5]\d)\b')
+    # Made year optional, as the site might just say "24 Aug"
+    date_pattern = re.compile(r'\b(\d{1,2})\s+([A-Za-z]{3,})(?:\s+(\d{4}))?\b', re.IGNORECASE)
 
     months_map = {
         "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
@@ -76,33 +85,38 @@ def main():
     }
 
     current_date = None
+    current_year_fallback = datetime.now().year
 
     for idx, line in enumerate(clean_lines):
-        d_match = date_pattern.match(line)
+        d_match = date_pattern.search(line) # Changed to .search()
         if d_match:
-            day = int(d_match.group(2))
-            m_str = d_match.group(3)[:3].lower()
-            year = int(d_match.group(4))
+            day = int(d_match.group(1))
+            m_str = d_match.group(2)[:3].lower()
+            # Use the year if provided, otherwise assume the current year
+            year = int(d_match.group(3)) if d_match.group(3) else current_year_fallback
+            
             if m_str in months_map:
                 current_date = (year, months_map[m_str], day)
             continue
 
-        t_match = time_pattern.match(line)
+        t_match = time_pattern.search(line) # Changed to .search()
         if t_match and current_date:
             hour, minute = int(t_match.group(1)), int(t_match.group(2))
             
-            # Context window around the timestamp
-            context = " ".join(clean_lines[max(0, idx-4):min(len(clean_lines), idx+5)])
+            # Widen context window slightly just in case React spaces things out
+            context = " ".join(clean_lines[max(0, idx-6):min(len(clean_lines), idx+7)])
             context_lower = context.lower()
 
             if "south africa" in context_lower or "springboks" in context_lower or " rsa " in f" {context_lower} ":
-                # Extract opponent
                 teams_found = []
                 known_teams = ["South Africa", "New Zealand", "Australia", "Argentina", "England", "Ireland", "Wales", "Scotland", "France", "Italy", "Fiji", "Japan"]
                 
                 for team in known_teams:
                     if team.lower() in context_lower:
                         teams_found.append(team)
+
+                # Deduplicate teams found just in case a team is mentioned twice
+                teams_found = list(dict.fromkeys(teams_found))
 
                 home = teams_found[0] if len(teams_found) > 0 else "South Africa"
                 away = teams_found[1] if len(teams_found) > 1 else ("Springboks" if home != "South Africa" else "TBD")
@@ -119,6 +133,10 @@ def main():
                     events.append(
                         create_ics_event(summary, start_dt, end_dt, "World Rugby Event", "Source: World Rugby", fixture_key)
                     )
+
+    if not events:
+        print("No Springbok matches found. Check 'debug_page.html' to see if the matches are actually listed on the default URL load.")
+        return
 
     ics_content = [
         "BEGIN:VCALENDAR",
