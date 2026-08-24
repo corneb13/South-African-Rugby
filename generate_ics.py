@@ -11,18 +11,19 @@ FIXTURE_URL = "https://springboks.rugby/match-centre/fixtures"
 def create_ics_event(summary, start_dt, end_dt, location, description, uid_id):
     fmt = "%Y%m%dT%H%M%S"
     dtstamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    return (
-        "BEGIN:VEVENT\n"
-        f"UID:sarugby-springbok-{uid_id}@sarugby\n"
-        f"DTSTAMP:{dtstamp}\n"
-        f"DTSTART;TZID=Africa/Johannesburg:{start_dt.strftime(fmt)}\n"
-        f"DTEND;TZID=Africa/Johannesburg:{end_dt.strftime(fmt)}\n"
-        f"SUMMARY:{summary}\n"
-        f"LOCATION:{location}\n"
-        f"DESCRIPTION:{description}\n"
-        "STATUS:CONFIRMED\n"
-        "END:VEVENT\n"
-    )
+    # Using a list joined by \n prevents double-spacing/blank lines in the final file
+    return "\n".join([
+        "BEGIN:VEVENT",
+        f"UID:sarugby-springbok-{uid_id}@sarugby",
+        f"DTSTAMP:{dtstamp}",
+        f"DTSTART;TZID=Africa/Johannesburg:{start_dt.strftime(fmt)}",
+        f"DTEND;TZID=Africa/Johannesburg:{end_dt.strftime(fmt)}",
+        f"SUMMARY:{summary}",
+        f"LOCATION:{location}",
+        f"DESCRIPTION:{description}",
+        "STATUS:CONFIRMED",
+        "END:VEVENT"
+    ])
 
 def format_team(team_name):
     flags = {
@@ -53,13 +54,13 @@ def main():
     
     driver = webdriver.Chrome(options=options)
     driver.get(FIXTURE_URL)
-    time.sleep(3) 
+    # Increased to 8 seconds to ensure the Javascript fully renders the match data
+    time.sleep(8) 
     page_source = driver.page_source
     driver.quit()
 
     soup = BeautifulSoup(page_source, 'html.parser')
 
-    # Convert images to their alt text AND file names to catch hidden logos
     for img in soup.find_all('img'):
         alt_text = img.get('alt', '').strip()
         src_text = img.get('src', '').strip()
@@ -73,7 +74,6 @@ def main():
     raw_text = soup.get_text(separator="\n")
     raw_lines = [line.strip() for line in raw_text.splitlines() if line.strip()]
 
-    # Filter purely numeric lines unless they are days (1-31) or times
     lines = []
     for line in raw_lines:
         if line.isdigit():
@@ -92,7 +92,6 @@ def main():
         "oct": 10, "october": 10, "nov": 11, "november": 11, "dec": 12, "december": 12
     }
 
-    # Added extensive abbreviation mappings
     team_keywords = {
         "springboks": "Springboks", "springbok": "Springboks", "south africa": "Springboks", "rsa": "Springboks", "za": "Springboks",
         "new zealand": "New Zealand", "all blacks": "New Zealand", "nzl": "New Zealand", "nz": "New Zealand",
@@ -158,7 +157,6 @@ def main():
 
             match_info = []
 
-            # READ BACKWARDS up to 5 lines to catch teams listed before the time
             back_offset = 1
             while idx - back_offset >= 0 and back_offset <= 5:
                 prev = lines[idx - back_offset]
@@ -167,7 +165,6 @@ def main():
                 match_info.insert(0, prev) 
                 back_offset += 1
 
-            # READ FORWARDS up to 5 lines to catch teams/venues listed after the time
             offset = 1
             while idx + offset < len(lines) and offset <= 6:
                 nxt = lines[idx + offset]
@@ -179,17 +176,10 @@ def main():
             text_block = " ".join(match_info)
             text_block_lower = text_block.lower()
             
-            # Create a robust, space-padded block stripped of punctuation for safe matching
             clean_text_block = re.sub(r'[^a-z0-9]', ' ', text_block_lower)
             padded_search = f" {clean_text_block} "
 
-            # STRICT FILTER: Ensure Springboks are playing
-            is_springbok_match = any(f" {kw} " in padded_search for kw in ["springboks", "springbok", "south africa", "rsa", "za"])
-            
-            if not is_springbok_match:
-                idx += offset - 1
-                idx += 1
-                continue
+            # The Strict Filter was removed here so we don't accidentally drop matches!
 
             matches_in_block = []
             for kw, canonical in team_keywords.items():
@@ -222,7 +212,6 @@ def main():
                 if item_lower in junk:
                     continue
                 
-                # Verify the line isn't just a team name/acronym before classifying it as a venue
                 is_team_line = False
                 item_padded = f" {re.sub(r'[^a-z0-9]', ' ', item_lower)} "
                 for kw in team_keywords.keys():
