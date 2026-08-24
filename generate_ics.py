@@ -260,10 +260,10 @@ def main():
 
     ics_content.append("END:VCALENDAR")
 
-    with open("springboks_fixtures.ics", "w", encoding="utf-8") as f:
+    with open("springboks.ics", "w", encoding="utf-8") as f:
         f.write("\n".join(ics_content))
 
-    print(f"Generated springboks_fixtures.ics with {len(seen_fixtures)} matches.")
+    print(f"Generated springboks.ics with {len(seen_fixtures)} matches.")
 
 if __name__ == "__main__":
     main()
