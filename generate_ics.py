@@ -81,7 +81,6 @@ def fetch_and_build_calendar():
     soup = BeautifulSoup(driver.page_source, "html.parser")
     driver.quit()
 
-    # Extract alt text from images just in case team names are hidden in logos
     for img in soup.find_all('img'):
         alt_text = img.get('alt', '').strip()
         if alt_text:
@@ -157,12 +156,11 @@ def fetch_and_build_calendar():
             idx += offset - 1
             text_block = " ".join(match_info).lower()
             
-            # STRICT FILTER: Skip if this specific block doesn't explicitly mention the Springboks.
+            # STRICT FILTER
             if "springbok" not in text_block and "south africa" not in text_block:
                 idx += 1
                 continue
 
-            # Skip Junior/Women teams
             is_excluded = any(ex in text_block for ex in ["women", "u20", "u21", "under 20", "under 21", "junior"])
             if not is_excluded:
                 junk = ["v", "vs", "not started", "upcoming", "live", "ft", "full time", "match centre", "tbc", "tickets", "buy tickets", "view more", "find out more", "match info"]
@@ -175,21 +173,25 @@ def fetch_and_build_calendar():
                     if item_lower in junk:
                         continue
                     
-                    matched_team = None
-                    for kw, canonical in team_keywords.items():
-                        # Protect against venues matching team names (e.g. Stade de France -> France)
-                        if kw == item_lower or (kw in item_lower and "stade" not in item_lower and "stadium" not in item_lower and "park" not in item_lower):
-                            matched_team = canonical
-                            break
+                    # Prevent venue names from causing a false team match
+                    safe_item = item_lower.replace("stade de france", "sdf_venue")
                     
-                    if matched_team:
-                        if matched_team not in found_teams:
-                            found_teams.append(matched_team)
+                    teams_in_line = []
+                    for kw, canonical in team_keywords.items():
+                        position = safe_item.find(kw)
+                        if position != -1:
+                            teams_in_line.append((position, canonical))
+                            
+                    if teams_in_line:
+                        # Sort by their position in the sentence to maintain Home v Away order
+                        teams_in_line.sort(key=lambda x: x[0])
+                        for pos, canonical in teams_in_line:
+                            if canonical not in found_teams:
+                                found_teams.append(canonical)
                     else:
                         if item.strip() and item.strip() not in other_info:
                             other_info.append(item.strip())
 
-                # Ensure Springboks are included if they were caught in the block but missed in the line iteration
                 if "Springboks" not in found_teams:
                     found_teams.append("Springboks")
 
@@ -268,7 +270,7 @@ def fetch_and_build_calendar():
     with open("springboks.ics", "w", encoding="utf-8") as f:
         f.write(ics_content)
         
-    print(f"Successfully generated springboks.ics with {len(events)} strictly verified Springbok fixtures!")
+    print(f"Successfully generated springboks.ics with {len(events)} correctly formatted fixtures!")
 
 if __name__ == "__main__":
     fetch_and_build_calendar()
