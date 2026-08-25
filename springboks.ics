@@ -5,24 +5,4 @@ CALSCALE:GREGORIAN
 METHOD:PUBLISH
 X-WR-CALNAME:Springboks Rugby
 X-WR-TIMEZONE:Africa/Johannesburg
-BEGIN:VEVENT
-UID:worldrugby-springbok-2026-8-25-SouthAfrica-NewZealand@worldrugby
-DTSTAMP:20260824T112703Z
-DTSTART;TZID=Africa/Johannesburg:20260825T161000
-DTEND;TZID=Africa/Johannesburg:20260825T181000
-SUMMARY:🇿🇦 South Africa 🏉 vs 🇳🇿 New Zealand 🏉
-LOCATION:World Rugby Event
-DESCRIPTION:Source: World Rugby
-STATUS:CONFIRMED
-END:VEVENT
-BEGIN:VEVENT
-UID:worldrugby-springbok-2026-8-29-SouthAfrica-NewZealand@worldrugby
-DTSTAMP:20260824T112703Z
-DTSTART;TZID=Africa/Johannesburg:20260829T141000
-DTEND;TZID=Africa/Johannesburg:20260829T161000
-SUMMARY:🇿🇦 South Africa 🏉 vs 🇳🇿 New Zealand 🏉
-LOCATION:World Rugby Event
-DESCRIPTION:Source: World Rugby
-STATUS:CONFIRMED
-END:VEVENT
 END:VCALENDAR
