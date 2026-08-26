@@ -3,7 +3,11 @@ from curl_cffi import requests
 from datetime import datetime, timezone, timedelta
 from zoneinfo import ZoneInfo
 
-API_URL = "https://cmsapi.pulselive.com/rugby/match"
+# Primary and secondary API endpoints used by PulseLive
+API_ENDPOINTS = [
+    "https://cmsapi.pulselive.com/rugby/match",
+    "https://api.wr-backend.pulselive.com/rugby/match"
+]
 
 def create_ics_event(summary, start_dt_utc, end_dt_utc, uid_id):
     fmt = "%Y%m%dT%H%M%SZ"
@@ -31,65 +35,81 @@ def format_team(team_name):
     return f"{flag} {team_name}"
 
 def main():
-    print("Fetching fixtures using browser TLS impersonation...")
+    print("Fetching fixtures with mandatory browser headers...")
     events = []
     
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Origin": "https://www.world.rugby",
+        "Referer": "https://www.world.rugby/",
+    }
+
     params = {
         "client": "worldrugby",
         "sport": "rugbyu",
         "language": "en",
-        "pageSize": 100
+        "pageSize": 100,
+        "states": "C,U,L"  # Completed, Unplayed, Live matches
     }
 
-    try:
-        # impersonate="chrome" bypasses Cloudflare WAF on datacenter IPs
-        response = requests.get(
-            API_URL, 
-            params=params, 
-            impersonate="chrome", 
-            timeout=15
-        )
-        print(f"API Response Status Code: {response.status_code}")
-        response.raise_for_status()
-        
-        data = response.json()
-        matches = data.get("content", [])
-        print(f"Total matches retrieved: {len(matches)}")
+    data = None
+    for url in API_ENDPOINTS:
+        try:
+            print(f"Trying endpoint: {url}")
+            response = requests.get(
+                url, 
+                params=params, 
+                headers=headers,
+                impersonate="chrome120", 
+                timeout=15
+            )
+            print(f"Response Status Code: {response.status_code}")
+            if response.status_code == 200:
+                data = response.json()
+                break
+        except Exception as e:
+            print(f"Endpoint {url} failed: {e}")
 
-        for match in matches:
-            teams = match.get("teams", [])
-            if not isinstance(teams, list) or len(teams) < 2:
+    if not data:
+        print("ERROR: All API endpoints returned invalid responses.")
+        sys.exit(1)
+
+    matches = data.get("content", [])
+    print(f"Total matches retrieved: {len(matches)}")
+
+    for match in matches:
+        teams = match.get("teams", [])
+        if not isinstance(teams, list) or len(teams) < 2:
+            continue
+
+        t1_name = teams[0].get("name", "") if isinstance(teams[0], dict) else ""
+        t2_name = teams[1].get("name", "") if isinstance(teams[1], dict) else ""
+        t1_abbr = teams[0].get("abbreviation", "") if isinstance(teams[0], dict) else ""
+        t2_abbr = teams[1].get("abbreviation", "") if isinstance(teams[1], dict) else ""
+
+        search_str = f"{t1_name} {t2_name} {t1_abbr} {t2_abbr}"
+        if any(k in search_str for k in ["South Africa", "Springboks", "RSA"]):
+            time_info = match.get("time", {})
+            timestamp_ms = time_info.get("millis") if isinstance(time_info, dict) else None
+            if not timestamp_ms:
                 continue
 
-            t1_name = teams[0].get("name", "") if isinstance(teams[0], dict) else ""
-            t2_name = teams[1].get("name", "") if isinstance(teams[1], dict) else ""
-            t1_abbr = teams[0].get("abbreviation", "") if isinstance(teams[0], dict) else ""
-            t2_abbr = teams[1].get("abbreviation", "") if isinstance(teams[1], dict) else ""
+            start_dt_utc = datetime.fromtimestamp(timestamp_ms / 1000.0, tz=timezone.utc)
+            end_dt_utc = start_dt_utc + timedelta(hours=2)
 
-            search_str = f"{t1_name} {t2_name} {t1_abbr} {t2_abbr}"
-            if any(k in search_str for k in ["South Africa", "Springboks", "RSA"]):
-                time_info = match.get("time", {})
-                timestamp_ms = time_info.get("millis") if isinstance(time_info, dict) else None
-                if not timestamp_ms:
-                    continue
+            sast_dt = start_dt_utc.astimezone(ZoneInfo("Africa/Johannesburg"))
+            summary = f"{format_team(t1_name)} vs {format_team(t2_name)}"
+            match_id = match.get("matchId", f"{start_dt_utc.timestamp()}")
 
-                start_dt_utc = datetime.fromtimestamp(timestamp_ms / 1000.0, tz=timezone.utc)
-                end_dt_utc = start_dt_utc + timedelta(hours=2)
-
-                sast_dt = start_dt_utc.astimezone(ZoneInfo("Africa/Johannesburg"))
-                summary = f"{format_team(t1_name)} vs {format_team(t2_name)}"
-                match_id = match.get("matchId", f"{start_dt_utc.timestamp()}")
-
-                events.append(create_ics_event(summary, start_dt_utc, end_dt_utc, match_id))
-                print(f"Added match: {summary} on {sast_dt.strftime('%Y-%m-%d %H:%M SAST')}")
-
-    except Exception as e:
-        print(f"Fetch Error: {e}")
+            events.append(create_ics_event(summary, start_dt_utc, end_dt_utc, match_id))
+            print(f"Added match: {summary} on {sast_dt.strftime('%Y-%m-%d %H:%M SAST')}")
 
     print(f"Total Springboks events compiled: {len(events)}")
 
     if not events:
-        print("ERROR: No events compiled. Aborting calendar update.")
+        print("ERROR: No Springboks events compiled. Aborting calendar update.")
         sys.exit(1)
 
     ics_content = [
