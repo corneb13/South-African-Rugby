@@ -30,33 +30,54 @@ def format_team(team_name):
     return f"{flag} {team_name}"
 
 def main():
-    print("Launching headless browser to intercept match data...")
+    print("Launching stealth browser instance...")
     captured_matches = []
 
     def handle_response(response):
-        if "rugby/match" in response.url and response.status == 200:
+        # Capture any JSON payload containing match arrays
+        if response.status == 200 and "json" in response.headers.get("content-type", ""):
             try:
                 data = response.json()
-                content = data.get("content", [])
-                if content:
-                    captured_matches.extend(content)
-                    print(f"Intercepted API response with {len(content)} matches.")
+                if isinstance(data, dict):
+                    content = data.get("content", [])
+                    if isinstance(content, list) and content and "teams" in content[0]:
+                        captured_matches.extend(content)
+                        print(f"Intercepted fixture stream from: {response.url[:60]}... ({len(content)} matches)")
             except Exception:
                 pass
 
     try:
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            context = browser.new_context(
-                user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
+            # Stealth args to bypass Cloudflare headless bot detection
+            browser = p.chromium.launch(
+                headless=True,
+                args=[
+                    "--disable-blink-features=AutomationControlled",
+                    "--no-sandbox",
+                    "--disable-setuid-sandbox"
+                ]
             )
-            page = context.new_page()
-            page.on("response", handle_response)
+            context = browser.new_context(
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                viewport={"width": 1280, "height": 720}
+            )
             
-            page.goto("https://www.world.rugby/fixtures", wait_until="networkidle", timeout=30000)
+            # Mask navigator.webdriver
+            page = context.new_page()
+            page.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+            page.on("response", handle_response)
+
+            print("Navigating to World Rugby fixtures...")
+            page.goto("https://www.world.rugby/fixtures", wait_until="domcontentloaded", timeout=30000)
+            page.wait_for_timeout(5000)  # Allow dynamic scripts time to trigger API calls
+            
+            # Scroll to trigger lazy-loaded widgets
+            page.evaluate("window.scrollBy(0, 500)")
+            page.wait_for_timeout(3000)
+
             browser.close()
     except Exception as e:
-        print(f"Playwright execution note: {e}")
+        print(f"Browser execution note: {e}")
 
     print(f"Total raw matches intercepted: {len(captured_matches)}")
 
