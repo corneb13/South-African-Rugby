@@ -1,18 +1,18 @@
 import requests
 from datetime import datetime, timezone, timedelta
 
-# World Rugby's backend API (Powered by PulseLive)
 API_URL = "https://cmsapi.pulselive.com/rugby/match"
 
-def create_ics_event(summary, start_dt, end_dt, uid_id):
-    fmt = "%Y%m%dT%H%M%S"
-    dtstamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+def create_ics_event(summary, start_dt_utc, end_dt_utc, uid_id):
+    # Pure UTC formatting with 'Z' ensures calendar apps convert time accurately
+    fmt = "%Y%m%dT%H%M%SZ"
+    dtstamp = datetime.now(timezone.utc).strftime(fmt)
     return "\n".join([
         "BEGIN:VEVENT",
         f"UID:worldrugby-{uid_id}@rugby",
         f"DTSTAMP:{dtstamp}",
-        f"DTSTART;TZID=Africa/Johannesburg:{start_dt.strftime(fmt)}",
-        f"DTEND;TZID=Africa/Johannesburg:{end_dt.strftime(fmt)}",
+        f"DTSTART:{start_dt_utc.strftime(fmt)}",
+        f"DTEND:{end_dt_utc.strftime(fmt)}",
         f"SUMMARY:{summary}",
         "DESCRIPTION:Source: World Rugby API",
         "STATUS:CONFIRMED",
@@ -34,18 +34,19 @@ def main():
     events = []
     
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
         "Accept": "application/json, text/plain, */*",
         "Origin": "https://www.world.rugby",
         "Referer": "https://www.world.rugby/"
     }
     
+    # Increased pageSize to 500 to capture all remaining matches for the year
     params = {
         "client": "worldrugby",
         "sport": "rugbyu",
         "statuses": "U",
         "page": 0,
-        "pageSize": 100
+        "pageSize": 500
     }
 
     try:
@@ -70,6 +71,7 @@ def main():
                     if not timestamp_ms:
                         continue
 
+                    # Keep as UTC object
                     start_dt = datetime.fromtimestamp(timestamp_ms / 1000.0, tz=timezone.utc)
                     end_dt = start_dt + timedelta(hours=2)
 
@@ -77,7 +79,7 @@ def main():
                     match_id = match.get("matchId", f"{team1}-{team2}-{start_dt.year}")
 
                     events.append(create_ics_event(summary, start_dt, end_dt, match_id))
-                    print(f"Added: {summary} on {start_dt.strftime('%Y-%m-%d %H:%M')}")
+                    print(f"Added: {summary} at {start_dt.strftime('%Y-%m-%d %H:%M UTC')}")
                     
             except Exception as e:
                 print(f"Error parsing match: {e}")
@@ -85,7 +87,6 @@ def main():
 
     except Exception as e:
         print(f"Failed to fetch data from API: {e}")
-        # Notice: No 'return' here anymore! It safely continues down to file writing.
 
     if not events:
         print("No upcoming South Africa matches found. Generating calendar structure.")
@@ -97,7 +98,6 @@ def main():
         "CALSCALE:GREGORIAN",
         "METHOD:PUBLISH",
         "X-WR-CALNAME:Springboks Rugby",
-        "X-WR-TIMEZONE:Africa/Johannesburg",
         *events,
         "END:VCALENDAR"
     ]
