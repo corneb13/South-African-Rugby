@@ -1,8 +1,9 @@
 import sys
 import re
 import uuid
+import hashlib
 import traceback
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone, timedelta, date
 from zoneinfo import ZoneInfo
 
 # Optional dependencies for more robust parsing and fetching
@@ -24,6 +25,13 @@ try:
     from playwright.sync_api import sync_playwright
 except Exception:
     sync_playwright = None
+
+# Prefer icalendar if available for RFC-compliant ICS
+try:
+    from icalendar import Calendar, Event, vCalAddress, vText
+    ICAL_AVAILABLE = True
+except Exception:
+    ICAL_AVAILABLE = False
 
 MONTH_MAP = {
     "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
@@ -67,7 +75,15 @@ def format_team(name):
     return f"🏉 {name.strip().title()}"
 
 
-def escape_ics(text: str) -> str:
+def stable_uid(team_home, team_away, year, month, day):
+    """Create a deterministic UID based on the teams and date only (stable across time changes).
+    """
+    base = f"{team_home.strip().lower()}|{team_away.strip().lower()}|{year:04d}-{month:02d}-{day:02d}"
+    h = hashlib.sha1(base.encode('utf-8')).hexdigest()
+    return f"{h}@sarugby"
+
+
+def escape_ics_text(text: str) -> str:
     if not text:
         return ""
     # Escape backslashes first
@@ -76,40 +92,7 @@ def escape_ics(text: str) -> str:
     text = text.replace('\r', '')
     text = text.replace(',', '\\,')
     text = text.replace(';', '\\;')
-    # Fold long lines per RFC5545 (75 octets). We'll do a simple fold by characters.
-    max_len = 70
-    if len(text) <= max_len:
-        return text
-    parts = [text[i:i+max_len] for i in range(0, len(text), max_len)]
-    return '\\n '.join(parts)
-
-
-def create_ics_event(summary, start_dt_utc, end_dt_utc, location="", description="", uid_id=None):
-    fmt = "%Y%m%dT%H%M%SZ"
-    dtstamp = datetime.now(timezone.utc).strftime(fmt)
-    uid = uid_id or str(uuid.uuid4())
-
-    summary = escape_ics(summary)
-    location = escape_ics(location)
-    description = escape_ics(description)
-
-    lines = [
-        "BEGIN:VEVENT",
-        f"UID:{uid}@sarugby",
-        f"DTSTAMP:{dtstamp}",
-        f"DTSTART:{start_dt_utc.strftime(fmt)}",
-        f"DTEND:{end_dt_utc.strftime(fmt)}",
-        f"SUMMARY:{summary}",
-    ]
-    if location:
-        lines.append(f"LOCATION:{location}")
-    if description:
-        lines.append(f"DESCRIPTION:{description}")
-    lines.extend([
-        "STATUS:CONFIRMED",
-        "END:VEVENT"
-    ])
-    return "\n".join(lines)
+    return text
 
 
 def parse_time_from_line(line, year, month, day, sast_tz):
@@ -123,14 +106,12 @@ def parse_time_from_line(line, year, month, day, sast_tz):
     if line.upper().startswith("TBC") or "TBC" in line.upper() or "TBA" in line.upper():
         return None
 
-    # Look for HH:MM with optional AM/PM
+    # Look for HH:MM with optional AM/PM and optional timezone
     time_re = re.search(r"(\d{1,2}:\d{2})(?:\s*([APap][Mm]))?", line)
     if time_re:
-        time_str = time_re.group(0)
         try:
             if dateparser:
-                # Build a full datetime string so parser knows the day/month/year context
-                dt = dateparser.parse(f"{day} {month} {year} {time_str}", dayfirst=False)
+                dt = dateparser.parse(f"{day} {month} {year} {time_re.group(0)}")
                 return dt.hour, dt.minute
             else:
                 h, m = time_re.group(1).split(":")
@@ -148,7 +129,7 @@ def parse_time_from_line(line, year, month, day, sast_tz):
     return None
 
 
-def parse_springboks_fixtures(page_text):
+def parse_springboks_fixtures(page_text, source_url=None):
     events = []
     seen = set()
     try:
@@ -224,36 +205,55 @@ def parse_springboks_fixtures(page_text):
                         hour, minute = time_tuple
                         dt_sast = datetime(year, month, day, hour, minute, tzinfo=sast_tz)
                     else:
-                        # If no time found, skip adding an event with guessed time; instead mark as TBD in description
                         dt_sast = None
 
                     key = f"{team_home}-{team_away}-{year}-{month}-{day}"
                     if key not in seen:
                         seen.add(key)
 
-                        if dt_sast:
-                            dt_utc = dt_sast.astimezone(timezone.utc)
-                            end_dt_utc = dt_utc + timedelta(hours=2)
-                            match_id = f"{year}{month:02d}{day:02d}-{dt_sast.hour:02d}{dt_sast.minute:02d}"
-                        else:
-                            # use midnight UTC placeholder for DTSTART/DTEND to keep ICS valid, but mark as TBD
-                            dt_utc = datetime(year, month, day, 0, 0, tzinfo=timezone.utc)
-                            end_dt_utc = dt_utc + timedelta(hours=2)
-                            match_id = f"{year}{month:02d}{day:02d}-TBD"
+                        # Stable UID based on teams+date only
+                        uid = stable_uid(team_home, team_away, year, month, day)
 
-                        summary = f"{format_team(team_home)} vs {format_team(team_away)}"
+                        # Description
                         desc_parts = []
                         if tournament:
                             desc_parts.append(tournament)
                         if not dt_sast:
                             desc_parts.append("Time: TBC")
+                        if source_url:
+                            desc_parts.append(f"Source: {source_url}")
                         description = " | ".join(desc_parts)
 
-                        events.append(create_ics_event(summary, dt_utc, end_dt_utc, venue, description, uid_id=match_id))
+                        # Build event record depending on whether we have a time
                         if dt_sast:
-                            print(f"Added Springboks Test: {summary} on {dt_sast.strftime('%Y-%m-%d %H:%M SAST')}")
+                            dt_utc = dt_sast.astimezone(timezone.utc)
+                            dt_end_utc = dt_utc + timedelta(hours=2)
+                            event_record = {
+                                'uid': uid,
+                                'summary': f"{format_team(team_home)} vs {format_team(team_away)}",
+                                'dtstart': dt_utc,
+                                'dtend': dt_end_utc,
+                                'location': venue,
+                                'description': description,
+                                'url': source_url
+                            }
                         else:
-                            print(f"Added Springboks Test (TBC time): {summary} on {year}-{month:02d}-{day:02d}")
+                            # All-day event for TBC
+                            event_record = {
+                                'uid': uid,
+                                'summary': f"{format_team(team_home)} vs {format_team(team_away)}",
+                                'dtstart_date': date(year, month, day),
+                                'dtend_date': date(year, month, day) + timedelta(days=1),
+                                'location': venue,
+                                'description': description,
+                                'url': source_url
+                            }
+
+                        events.append(event_record)
+                        if dt_sast:
+                            print(f"Added Springboks Test: {event_record['summary']} on {dt_sast.strftime('%Y-%m-%d %H:%M SAST')}")
+                        else:
+                            print(f"Added Springboks Test (TBC time): {event_record['summary']} on {year}-{month:02d}-{day:02d}")
 
         i += 1
 
@@ -298,19 +298,93 @@ def fetch_page_with_playwright(url):
         return None
 
 
+def build_ics(events):
+    # If icalendar is available, prefer it for richer/valid ICS
+    if ICAL_AVAILABLE:
+        cal = Calendar()
+        cal.add('prodid', '-//Springboks Official Test Fixtures//EN')
+        cal.add('version', '2.0')
+        cal.add('calscale', 'GREGORIAN')
+        cal.add('method', 'PUBLISH')
+        cal.add('X-WR-CALNAME', 'Springboks Rugby')
+
+        for ev in events:
+            e = Event()
+            e.add('uid', ev['uid'])
+            e.add('summary', ev['summary'])
+            e.add('dtstamp', datetime.now(timezone.utc))
+            if 'dtstart' in ev:
+                e.add('dtstart', ev['dtstart'])
+                e.add('dtend', ev['dtend'])
+            else:
+                # all-day
+                e.add('dtstart', ev['dtstart_date'])
+                e.add('dtend', ev['dtend_date'])
+
+            if ev.get('location'):
+                e.add('location', vText(ev.get('location')))
+            if ev.get('description'):
+                e.add('description', vText(ev.get('description')))
+            if ev.get('url'):
+                e.add('url', ev.get('url'))
+
+            # Organizer placeholder (optional)
+            try:
+                organizer = vCalAddress('MAILTO:info@springboks.rugby')
+                organizer.params['cn'] = vText('Springboks')
+                e['organizer'] = organizer
+            except Exception:
+                pass
+
+            cal.add_component(e)
+
+        return cal.to_ical().decode('utf-8')
+
+    # Fallback: manual ICS building (less rich)
+    lines = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//Springboks Official Test Fixtures//EN",
+        "CALSCALE:GREGORIAN",
+        "METHOD:PUBLISH",
+        "X-WR-CALNAME:Springboks Rugby",
+    ]
+
+    for ev in events:
+        lines.append('BEGIN:VEVENT')
+        lines.append(f"UID:{ev['uid']}")
+        lines.append(f"DTSTAMP:{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}")
+        if 'dtstart' in ev:
+            lines.append(f"DTSTART:{ev['dtstart'].strftime('%Y%m%dT%H%M%SZ')}")
+            lines.append(f"DTEND:{ev['dtend'].strftime('%Y%m%dT%H%M%SZ')}")
+        else:
+            lines.append(f"DTSTART;VALUE=DATE:{ev['dtstart_date'].strftime('%Y%m%d')}")
+            lines.append(f"DTEND;VALUE=DATE:{ev['dtend_date'].strftime('%Y%m%d')}")
+        lines.append(f"SUMMARY:{escape_ics_text(ev['summary'])}")
+        if ev.get('location'):
+            lines.append(f"LOCATION:{escape_ics_text(ev.get('location'))}")
+        if ev.get('description'):
+            lines.append(f"DESCRIPTION:{escape_ics_text(ev.get('description'))}")
+        if ev.get('url'):
+            lines.append(f"URL:{ev.get('url')}")
+        lines.append('STATUS:CONFIRMED')
+        lines.append('END:VEVENT')
+
+    lines.append('END:VCALENDAR')
+    return '\n'.join(lines)
+
+
 def main():
     print("Fetching official Springboks Test fixtures...")
     events = []
 
     urls = [
-        "https://springboks.rugby/sa-teams-players/springboks",
-        "https://www.springboks.rugby/match-centre/"
+        ("https://springboks.rugby/sa-teams-players/springboks", "https://springboks.rugby/sa-teams-players/springboks"),
+        ("https://www.springboks.rugby/match-centre/", "https://www.springboks.rugby/match-centre/")
     ]
 
-    for target_url in urls:
+    for target_url, source_url in urls:
         print(f"Fetching {target_url}...")
-        page_text = None
-        # Try requests first (fast, lighter)
         page_text = fetch_page_with_requests(target_url)
         if not page_text:
             print("Requests fetch failed or returned too little content; trying Playwright (if available)...")
@@ -319,11 +393,9 @@ def main():
             print(f"Warning: Unable to fetch content from {target_url}")
             continue
 
-        # Optionally try to extract visible text via BeautifulSoup if available
         if BeautifulSoup:
             try:
                 soup = BeautifulSoup(page_text, "lxml")
-                # Use body text as fallback; it tends to collapse scripts/styles
                 body = soup.get_text(separator="\n")
             except Exception:
                 body = page_text
@@ -331,51 +403,24 @@ def main():
             body = page_text
 
         try:
-            events.extend(parse_springboks_fixtures(body))
+            events.extend(parse_springboks_fixtures(body, source_url=source_url))
         except Exception:
             print("Error parsing page; continuing to next URL")
             traceback.print_exc()
 
-    # Remove duplicates and sort by DTSTART (we can sort by the match id encoded in UID if present)
-    unique = []
-    seen_uids = set()
+    # Deduplicate by UID to ensure stability
+    unique = {}
     for ev in events:
-        if ev in seen_uids:
-            continue
-        seen_uids.add(ev)
-        unique.append(ev)
+        unique[ev['uid']] = ev
 
-    print(f"Total official Springboks Test events compiled: {len(unique)}")
+    compiled = list(unique.values())
 
-    if not unique:
-        print("No Senior Springboks Test events compiled. Writing empty calendar and exiting.")
-        # Write an empty calendar to keep behaviour predictable
-        ics_content = [
-            "BEGIN:VCALENDAR",
-            "VERSION:2.0",
-            "PRODID:-//Springboks Official Test Fixtures//EN",
-            "CALSCALE:GREGORIAN",
-            "METHOD:PUBLISH",
-            "X-WR-CALNAME:Springboks Rugby",
-            "END:VCALENDAR"
-        ]
-        with open("springboks.ics", "w", encoding="utf-8") as f:
-            f.write("\n".join(ics_content))
-        sys.exit(0)
+    print(f"Total official Springboks Test events compiled: {len(compiled)}")
 
-    ics_content = [
-        "BEGIN:VCALENDAR",
-        "VERSION:2.0",
-        "PRODID:-//Springboks Official Test Fixtures//EN",
-        "CALSCALE:GREGORIAN",
-        "METHOD:PUBLISH",
-        "X-WR-CALNAME:Springboks Rugby",
-        *unique,
-        "END:VCALENDAR"
-    ]
+    ics_text = build_ics(compiled)
 
     with open("springboks.ics", "w", encoding="utf-8") as f:
-        f.write("\n".join(ics_content))
+        f.write(ics_text)
 
     print("File springboks.ics successfully updated with official Senior Test matches.")
 
