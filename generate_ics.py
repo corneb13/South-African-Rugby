@@ -2,7 +2,6 @@ import requests
 from datetime import datetime, timezone, timedelta
 
 # World Rugby's backend API (Powered by PulseLive)
-# statuses=U (Unplayed)
 API_URL = "https://cmsapi.pulselive.com/rugby/match"
 
 def create_ics_event(summary, start_dt, end_dt, uid_id):
@@ -32,72 +31,64 @@ def format_team(team_name):
 
 def main():
     print("Fetching fixtures directly from World Rugby API...")
+    events = []
     
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
         "Origin": "https://www.world.rugby",
         "Referer": "https://www.world.rugby/"
     }
     
-    # We query all upcoming Men's matches (sport=rugbyu, statuses=U)
     params = {
         "client": "worldrugby",
         "sport": "rugbyu",
-        "statuses": "U", # U = Unplayed (Future matches)
+        "statuses": "U",
         "page": 0,
         "pageSize": 100
     }
 
     try:
-        response = requests.get(API_URL, headers=headers, params=params, timeout=10)
+        response = requests.get(API_URL, headers=headers, params=params, timeout=15)
         response.raise_for_status()
         data = response.json()
+        
+        matches = data.get("content", [])
+        print(f"Found {len(matches)} total upcoming global rugby matches.")
+
+        for match in matches:
+            try:
+                teams = match.get("teams", [])
+                if len(teams) != 2:
+                    continue
+                    
+                team1 = teams[0].get("name", "TBD")
+                team2 = teams[1].get("name", "TBD")
+
+                if "South Africa" in team1 or "South Africa" in team2:
+                    timestamp_ms = match.get("time", {}).get("millis")
+                    if not timestamp_ms:
+                        continue
+
+                    start_dt = datetime.fromtimestamp(timestamp_ms / 1000.0, tz=timezone.utc)
+                    end_dt = start_dt + timedelta(hours=2)
+
+                    summary = f"{format_team(team1)} vs {format_team(team2)}"
+                    match_id = match.get("matchId", f"{team1}-{team2}-{start_dt.year}")
+
+                    events.append(create_ics_event(summary, start_dt, end_dt, match_id))
+                    print(f"Added: {summary} on {start_dt.strftime('%Y-%m-%d %H:%M')}")
+                    
+            except Exception as e:
+                print(f"Error parsing match: {e}")
+                continue
+
     except Exception as e:
         print(f"Failed to fetch data from API: {e}")
-        return
-
-    events = []
-    
-    # PulseLive stores the list of matches inside the 'content' array
-    matches = data.get("content", [])
-    print(f"Found {len(matches)} total upcoming global rugby matches.")
-
-    for match in matches:
-        try:
-            # Check if this is a Men's 15s match (ignoring Women's, Sevens, U20)
-            # You can inspect match['events'] or match['competition'] if needed
-            teams = match.get("teams", [])
-            if len(teams) != 2:
-                continue
-                
-            team1 = teams[0].get("name", "TBD")
-            team2 = teams[1].get("name", "TBD")
-
-            # Is South Africa playing?
-            if "South Africa" in team1 or "South Africa" in team2:
-                # The API provides time in standard milliseconds since epoch! 
-                # No more regex parsing for dates/times!
-                timestamp_ms = match.get("time", {}).get("millis")
-                
-                if not timestamp_ms:
-                    continue
-
-                # Convert UTC timestamp to our timezone
-                start_dt = datetime.fromtimestamp(timestamp_ms / 1000.0, tz=timezone.utc)
-                end_dt = start_dt + timedelta(hours=2)
-
-                summary = f"{format_team(team1)} vs {format_team(team2)}"
-                match_id = match.get("matchId", f"{team1}-{team2}-{start_dt.year}")
-
-                events.append(create_ics_event(summary, start_dt, end_dt, match_id))
-                print(f"Added: {summary} on {start_dt.strftime('%Y-%m-%d %H:%M')}")
-                
-        except Exception as e:
-            print(f"Error parsing a match: {e}")
-            continue
+        # Notice: No 'return' here anymore! It safely continues down to file writing.
 
     if not events:
-        print("No upcoming South Africa matches found. Generating an empty calendar.")
+        print("No upcoming South Africa matches found. Generating calendar structure.")
 
     ics_content = [
         "BEGIN:VCALENDAR",
@@ -114,7 +105,7 @@ def main():
     with open("springboks.ics", "w", encoding="utf-8") as f:
         f.write("\n".join(ics_content))
 
-    print(f"springboks.ics with {len(events)} matches.")
+    print(f"File springboks.ics created with {len(events)} matches.")
 
 if __name__ == "__main__":
     main()
