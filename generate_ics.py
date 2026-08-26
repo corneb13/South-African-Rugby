@@ -1,10 +1,12 @@
 import sys
+import os
 import re
 import uuid
 import hashlib
 import traceback
 from datetime import datetime, timezone, timedelta, date
 from zoneinfo import ZoneInfo
+import urllib.parse
 
 # Optional dependencies for more robust parsing and fetching
 try:
@@ -42,6 +44,41 @@ MONTH_MAP = {
 
 # Keywords to ignore (women / junior / sevens)
 IGNORE_KEYWORDS = [r"WOMEN", r"U[- ]?20", r"U[- ]?21", r"U[- ]?18", r"SEVEN", r"7S", r"SEVENS", r"UNDER \d+"]
+
+SNAPSHOT_DIR = "snapshots"
+
+
+def ensure_snapshot_dir():
+    os.makedirs(SNAPSHOT_DIR, exist_ok=True)
+
+
+def snapshot_filename(url, suffix):
+    parsed = urllib.parse.urlparse(url)
+    host = parsed.netloc.replace(':', '_')
+    path = parsed.path.strip('/').replace('/', '_') or 'root'
+    ts = datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')
+    safe = f"{host}__{path}__{ts}.{suffix}"
+    return os.path.join(SNAPSHOT_DIR, safe)
+
+
+def save_snapshot(url, html, body_text=None):
+    ensure_snapshot_dir()
+    html_path = snapshot_filename(url, 'html')
+    try:
+        with open(html_path, 'w', encoding='utf-8') as f:
+            f.write(html)
+        print(f"Saved snapshot HTML: {html_path}")
+    except Exception as e:
+        print(f"Failed to save HTML snapshot: {e}")
+
+    if body_text is not None:
+        body_path = snapshot_filename(url, 'body.txt')
+        try:
+            with open(body_path, 'w', encoding='utf-8') as f:
+                f.write(body_text)
+            print(f"Saved snapshot BODY text: {body_path}")
+        except Exception as e:
+            print(f"Failed to save BODY snapshot: {e}")
 
 
 def format_team(name):
@@ -139,6 +176,16 @@ def parse_springboks_fixtures(page_text, source_url=None):
 
     # Normalize text and split
     lines = [line.strip() for line in page_text.splitlines() if line.strip()]
+
+    # Save a small debug dump of the normalized body for inspection
+    try:
+        ensure_snapshot_dir()
+        dbg_path = os.path.join(SNAPSHOT_DIR, f"body_debug_{datetime.utcnow().strftime('%Y%m%dT%H%M%SZ')}.txt")
+        with open(dbg_path, 'w', encoding='utf-8') as dbg_f:
+            dbg_f.write('\n'.join(lines[:400]))
+        print(f"Saved parser debug body excerpt: {dbg_path}")
+    except Exception:
+        pass
 
     current_year = datetime.now().year
     current_month = None
@@ -269,6 +316,11 @@ def fetch_page_with_requests(url, timeout=15):
         }
         r = requests.get(url, headers=headers, timeout=timeout)
         if r.status_code == 200 and r.text and len(r.text) > 200:
+            # Save snapshot of raw HTML
+            try:
+                save_snapshot(url, r.text)
+            except Exception:
+                pass
             return r.text
     except Exception:
         return None
@@ -292,6 +344,15 @@ def fetch_page_with_playwright(url):
                     pass
                 page.wait_for_timeout(400)
             body = page.content()
+            # Save snapshot of raw HTML and body text
+            try:
+                text_body = page.inner_text('body')
+            except Exception:
+                text_body = None
+            try:
+                save_snapshot(url, body, body_text=text_body)
+            except Exception:
+                pass
             browser.close()
             return body
     except Exception:
@@ -379,8 +440,8 @@ def main():
     events = []
 
     urls = [
-        ("https://springboks.rugby/sa-teams-players/springboks", "https://springboks.rugby/sa-teams-players/springboks"),
-        ("https://www.springboks.rugby/match-centre/", "https://www.springboks.rugby/match-centre/")
+        ("https://springboks.rugby/match-centre/fixtures", "https://springboks.rugby/match-centre/fixtures"),
+        ("https://www.world.rugby/tournaments/fixtures-results", "https://www.world.rugby/tournaments/fixtures-results")
     ]
 
     for target_url, source_url in urls:
@@ -416,6 +477,20 @@ def main():
     compiled = list(unique.values())
 
     print(f"Total official Springboks Test events compiled: {len(compiled)}")
+
+    # If zero events, write a debug index file pointing to any snapshots
+    if len(compiled) == 0:
+        try:
+            ensure_snapshot_dir()
+            files = os.listdir(SNAPSHOT_DIR)
+            debug_index = os.path.join(SNAPSHOT_DIR, 'debug_index.txt')
+            with open(debug_index, 'w', encoding='utf-8') as di:
+                di.write('No events parsed. Snapshot files present:\n')
+                for fn in files:
+                    di.write(fn + '\n')
+            print(f"Wrote snapshot index: {debug_index}")
+        except Exception:
+            pass
 
     ics_text = build_ics(compiled)
 
