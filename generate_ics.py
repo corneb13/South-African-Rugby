@@ -112,7 +112,7 @@ def main():
         "END:VCALENDAR"
     ]
 
-    with open("springboks_api.ics", "w", encoding="utf-8") as f:
+    with open("springboks.ics", "w", encoding="utf-8") as f:
         f.write("\n".join(ics_content))
 
     print(f"Successfully generated springboks_api.ics with {len(events)} matches.")
