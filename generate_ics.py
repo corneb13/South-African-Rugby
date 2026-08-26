@@ -97,8 +97,7 @@ def main():
             continue
 
     if not events:
-        print("No upcoming South Africa matches found in the API feed.")
-        return
+        print("No upcoming South Africa matches found. Generating an empty calendar.")
 
     ics_content = [
         "BEGIN:VCALENDAR",
