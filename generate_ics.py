@@ -1,13 +1,8 @@
 import sys
-from curl_cffi import requests
+import json
 from datetime import datetime, timezone, timedelta
 from zoneinfo import ZoneInfo
-
-# Primary and secondary API endpoints used by PulseLive
-API_ENDPOINTS = [
-    "https://cmsapi.pulselive.com/rugby/match",
-    "https://api.wr-backend.pulselive.com/rugby/match"
-]
+from playwright.sync_api import sync_playwright
 
 def create_ics_event(summary, start_dt_utc, end_dt_utc, uid_id):
     fmt = "%Y%m%dT%H%M%SZ"
@@ -35,51 +30,40 @@ def format_team(team_name):
     return f"{flag} {team_name}"
 
 def main():
-    print("Fetching fixtures with mandatory browser headers...")
-    events = []
-    
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-        "Accept": "application/json, text/plain, */*",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Origin": "https://www.world.rugby",
-        "Referer": "https://www.world.rugby/",
-    }
+    print("Launching headless browser to intercept match data...")
+    captured_matches = []
 
-    params = {
-        "client": "worldrugby",
-        "sport": "rugbyu",
-        "language": "en",
-        "pageSize": 100,
-        "states": "C,U,L"  # Completed, Unplayed, Live matches
-    }
-
-    data = None
-    for url in API_ENDPOINTS:
-        try:
-            print(f"Trying endpoint: {url}")
-            response = requests.get(
-                url, 
-                params=params, 
-                headers=headers,
-                impersonate="chrome120", 
-                timeout=15
-            )
-            print(f"Response Status Code: {response.status_code}")
-            if response.status_code == 200:
+    def handle_response(response):
+        if "rugby/match" in response.url and response.status == 200:
+            try:
                 data = response.json()
-                break
-        except Exception as e:
-            print(f"Endpoint {url} failed: {e}")
+                content = data.get("content", [])
+                if content:
+                    captured_matches.extend(content)
+                    print(f"Intercepted API response with {len(content)} matches.")
+            except Exception:
+                pass
 
-    if not data:
-        print("ERROR: All API endpoints returned invalid responses.")
-        sys.exit(1)
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context(
+                user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
+            )
+            page = context.new_page()
+            page.on("response", handle_response)
+            
+            page.goto("https://www.world.rugby/fixtures", wait_until="networkidle", timeout=30000)
+            browser.close()
+    except Exception as e:
+        print(f"Playwright execution note: {e}")
 
-    matches = data.get("content", [])
-    print(f"Total matches retrieved: {len(matches)}")
+    print(f"Total raw matches intercepted: {len(captured_matches)}")
 
-    for match in matches:
+    events = []
+    seen_matches = set()
+
+    for match in captured_matches:
         teams = match.get("teams", [])
         if not isinstance(teams, list) or len(teams) < 2:
             continue
@@ -97,9 +81,15 @@ def main():
                 continue
 
             start_dt_utc = datetime.fromtimestamp(timestamp_ms / 1000.0, tz=timezone.utc)
-            end_dt_utc = start_dt_utc + timedelta(hours=2)
+            match_key = f"{t1_name}-{t2_name}-{start_dt_utc.timestamp()}"
 
+            if match_key in seen_matches:
+                continue
+            seen_matches.add(match_key)
+
+            end_dt_utc = start_dt_utc + timedelta(hours=2)
             sast_dt = start_dt_utc.astimezone(ZoneInfo("Africa/Johannesburg"))
+
             summary = f"{format_team(t1_name)} vs {format_team(t2_name)}"
             match_id = match.get("matchId", f"{start_dt_utc.timestamp()}")
 
