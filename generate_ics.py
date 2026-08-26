@@ -1,4 +1,7 @@
+import sys
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from datetime import datetime, timezone, timedelta
 from zoneinfo import ZoneInfo
 
@@ -33,6 +36,10 @@ def main():
     print("Fetching fixtures from World Rugby API...")
     events = []
     
+    session = requests.Session()
+    retries = Retry(total=3, backoff_factor=2, status_forcelist=[500, 502, 503, 504])
+    session.mount("https://", HTTPAdapter(max_retries=retries))
+
     headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
         "Accept": "application/json, text/plain, */*",
@@ -41,14 +48,17 @@ def main():
         "Referer": "https://www.world.rugby/"
     }
 
+    # PulseLive requires language='en', page=0, and smaller pageSize to avoid 502s
     params = {
         "client": "worldrugby",
         "sport": "rugbyu",
-        "pageSize": 100
+        "language": "en",
+        "page": 0,
+        "pageSize": 40
     }
 
     try:
-        response = requests.get(API_URL, headers=headers, params=params, timeout=15)
+        response = session.get(API_URL, headers=headers, params=params, timeout=15)
         print(f"API Response Status Code: {response.status_code}")
         response.raise_for_status()
         data = response.json()
@@ -66,7 +76,6 @@ def main():
             t1_abbr = teams[0].get("abbreviation", "")
             t2_abbr = teams[1].get("abbreviation", "")
 
-            # Match against name or abbreviation (RSA)
             search_str = f"{t1_name} {t2_name} {t1_abbr} {t2_abbr}"
             if any(k in search_str for k in ["South Africa", "Springboks", "RSA"]):
                 time_info = match.get("time", {})
@@ -89,6 +98,11 @@ def main():
 
     print(f"Total Springboks events compiled: {len(events)}")
 
+    # Safety check: Do NOT overwrite calendar file if no events were compiled
+    if not events:
+        print("ERROR: No events compiled! Aborting file update to protect existing calendar.")
+        sys.exit(1)
+
     ics_content = [
         "BEGIN:VCALENDAR",
         "VERSION:2.0",
@@ -102,6 +116,8 @@ def main():
 
     with open("springboks.ics", "w", encoding="utf-8") as f:
         f.write("\n".join(ics_content))
+
+    print("File springboks.ics successfully updated.")
 
 if __name__ == "__main__":
     main()
