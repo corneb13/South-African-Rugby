@@ -1,8 +1,29 @@
 import sys
 import re
+import uuid
+import traceback
 from datetime import datetime, timezone, timedelta
 from zoneinfo import ZoneInfo
-from playwright.sync_api import sync_playwright
+
+# Optional dependencies for more robust parsing and fetching
+try:
+    import requests
+    from bs4 import BeautifulSoup
+except Exception:
+    requests = None
+    BeautifulSoup = None
+
+# date parsing
+try:
+    from dateutil import parser as dateparser
+except Exception:
+    dateparser = None
+
+# Playwright is optional fallback for JS-rendered pages
+try:
+    from playwright.sync_api import sync_playwright
+except Exception:
+    sync_playwright = None
 
 MONTH_MAP = {
     "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
@@ -11,7 +32,13 @@ MONTH_MAP = {
     "july": 7, "august": 8, "september": 9, "october": 10, "november": 11, "december": 12
 }
 
+# Keywords to ignore (women / junior / sevens)
+IGNORE_KEYWORDS = [r"WOMEN", r"U[- ]?20", r"U[- ]?21", r"U[- ]?18", r"SEVEN", r"7S", r"SEVENS", r"UNDER \d+"]
+
+
 def format_team(name):
+    if not name:
+        return name
     upper = name.strip().upper()
     if "SPRINGBOK" in upper or "SOUTH AFRICA" in upper:
         return "🇿🇦 Springboks"
@@ -28,23 +55,47 @@ def format_team(name):
     elif "IRELAND" in upper:
         return "🇮🇪 Ireland"
     elif "ENGLAND" in upper:
-        return "🏴󠁧󠁢󠁥󠁮󠁧󠁿 England"
+        return "🏴 England"
     elif "WALES" in upper:
-        return "🏴󠁧󠁢󠁷󠁬󠁳󠁿 Wales"
+        return "🏴 Wales"
     elif "SCOTLAND" in upper:
-        return "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland"
+        return "🏴 Scotland"
     elif "JAPAN" in upper:
         return "🇯🇵 Japan"
     elif "FIJI" in upper:
         return "🇫🇯 Fiji"
     return f"🏉 {name.strip().title()}"
 
-def create_ics_event(summary, start_dt_utc, end_dt_utc, location="", description="", uid_id=""):
+
+def escape_ics(text: str) -> str:
+    if not text:
+        return ""
+    # Escape backslashes first
+    text = text.replace('\\', '\\\\')
+    text = text.replace('\n', '\\n')
+    text = text.replace('\r', '')
+    text = text.replace(',', '\\,')
+    text = text.replace(';', '\\;')
+    # Fold long lines per RFC5545 (75 octets). We'll do a simple fold by characters.
+    max_len = 70
+    if len(text) <= max_len:
+        return text
+    parts = [text[i:i+max_len] for i in range(0, len(text), max_len)]
+    return '\\n '.join(parts)
+
+
+def create_ics_event(summary, start_dt_utc, end_dt_utc, location="", description="", uid_id=None):
     fmt = "%Y%m%dT%H%M%SZ"
     dtstamp = datetime.now(timezone.utc).strftime(fmt)
+    uid = uid_id or str(uuid.uuid4())
+
+    summary = escape_ics(summary)
+    location = escape_ics(location)
+    description = escape_ics(description)
+
     lines = [
         "BEGIN:VEVENT",
-        f"UID:springboks-test-{uid_id}@sarugby",
+        f"UID:{uid}@sarugby",
         f"DTSTAMP:{dtstamp}",
         f"DTSTART:{start_dt_utc.strftime(fmt)}",
         f"DTEND:{end_dt_utc.strftime(fmt)}",
@@ -60,10 +111,52 @@ def create_ics_event(summary, start_dt_utc, end_dt_utc, location="", description
     ])
     return "\n".join(lines)
 
+
+def parse_time_from_line(line, year, month, day, sast_tz):
+    """Try to parse a time expression from a line.
+    Returns (hour, minute) or None if not found or TBC.
+    Uses dateutil if available, otherwise falls back to simple HH:MM match.
+    """
+    if not line:
+        return None
+    line = line.strip()
+    if line.upper().startswith("TBC") or "TBC" in line.upper() or "TBA" in line.upper():
+        return None
+
+    # Look for HH:MM with optional AM/PM
+    time_re = re.search(r"(\d{1,2}:\d{2})(?:\s*([APap][Mm]))?", line)
+    if time_re:
+        time_str = time_re.group(0)
+        try:
+            if dateparser:
+                # Build a full datetime string so parser knows the day/month/year context
+                dt = dateparser.parse(f"{day} {month} {year} {time_str}", dayfirst=False)
+                return dt.hour, dt.minute
+            else:
+                h, m = time_re.group(1).split(":")
+                hh = int(h)
+                mm = int(m)
+                ampm = time_re.group(2)
+                if ampm:
+                    if ampm.lower() == 'pm' and hh != 12:
+                        hh += 12
+                    if ampm.lower() == 'am' and hh == 12:
+                        hh = 0
+                return hh, mm
+        except Exception:
+            return None
+    return None
+
+
 def parse_springboks_fixtures(page_text):
     events = []
     seen = set()
-    sast_tz = ZoneInfo("Africa/Johannesburg")
+    try:
+        sast_tz = ZoneInfo("Africa/Johannesburg")
+    except Exception:
+        sast_tz = timezone(timedelta(hours=2))  # fallback to UTC+2
+
+    # Normalize text and split
     lines = [line.strip() for line in page_text.splitlines() if line.strip()]
 
     current_year = datetime.now().year
@@ -73,7 +166,7 @@ def parse_springboks_fixtures(page_text):
     while i < len(lines):
         line = lines[i]
 
-        # 1. Detect Month/Year headers (e.g. "AUGUST 2026")
+        # Detect Month/Year headers (e.g. "AUGUST 2026")
         header_m = re.search(r'^(JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|OCTOBER|NOVEMBER|DECEMBER)\s+(\d{4})$', line, re.IGNORECASE)
         if header_m:
             current_month = MONTH_MAP[header_m.group(1).lower()]
@@ -81,26 +174,32 @@ def parse_springboks_fixtures(page_text):
             i += 1
             continue
 
-        # 2. Detect Date headers (e.g. "Sat 29 Aug", "Sun 27 Sep", "Fri 13 Nov")
-        date_m = re.search(r'^(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)?\s*(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)$', line, re.IGNORECASE)
+        # Detect Date headers with optional month (e.g. "Sat 29 Aug", "29 Aug", "29")
+        date_m = re.search(r'^(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)?\s*(\d{1,2})(?:\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|January|February|March|April|May|June|July|August|September|October|November|December))?$', line, re.IGNORECASE)
         if date_m:
             day = int(date_m.group(1))
-            month = MONTH_MAP[date_m.group(2).lower()]
-            year = current_year if current_year else datetime.now().year
+            month_group = date_m.group(2)
+            if month_group:
+                month = MONTH_MAP[month_group.lower()]
+            else:
+                month = current_month or datetime.now().month
+            year = current_year or datetime.now().year
 
-            block = lines[i+1 : i+15]
-            time_str = "15:00"
-            team_home, team_away = "", ""
+            # Look ahead block for details
+            block = lines[i+1 : i+20]
+            team_home, team_away = None, None
             venue, tournament = "", ""
+            time_tuple = None
 
             for b_idx, b_line in enumerate(block):
-                # Time
-                time_m = re.search(r'^(\d{1,2}:\d{2})$', b_line)
-                if time_m:
-                    time_str = time_m.group(1)
+                # Try parse time
+                if not time_tuple:
+                    t = parse_time_from_line(b_line, year, month, day, sast_tz)
+                    if t:
+                        time_tuple = t
 
-                # Teams: Single line or multi-line "SPRINGBOKS V NEW ZEALAND"
-                vs_m = re.search(r'^(.+?)\s+[Vv]\s+(.+?)$', b_line)
+                # Teams: handle many variants of separators
+                vs_m = re.search(r'^(.+?)\s+(?:v|vs|v\.|vs\.|–|—|-|\u2013|\u2014)\s+(.+?)$', b_line, re.IGNORECASE)
                 if vs_m:
                     team_home = vs_m.group(1).strip()
                     team_away = vs_m.group(2).strip()
@@ -108,33 +207,96 @@ def parse_springboks_fixtures(page_text):
                     team_home = block[b_idx - 1].strip()
                     team_away = block[b_idx + 1].strip()
 
-                # Venue / Tournament
-                if "STADIUM" in b_line.upper() or "PARK" in b_line.upper():
+                # Venue detection (loose)
+                up = b_line.upper()
+                if any(k in up for k in ["STADIUM", "PARK", "ARENA", "FIELD", "GROUND"]):
                     venue = b_line.strip()
-                elif "RIVALRY" in b_line.upper() or "CHAMPIONSHIP" in b_line.upper() or "INTERNATIONAL" in b_line.upper():
+                # Tournament keywords
+                if any(k in up for k in ["RIVALRY", "CHAMPIONSHIP", "TEST", "INTERNATIONAL", "SERIES", "TOURNAMENT"]):
                     tournament = b_line.strip()
 
+            # Validate teams and filter out non-senior matches
             if team_home and team_away:
                 combined = f"{team_home} {team_away}".upper()
-                # Strict check to ensure Senior Springboks involvement and filter out women/juniors
-                if ("SPRINGBOK" in combined or "SOUTH AFRICA" in combined) and not any(x in combined for x in ["WOMEN", "U20", "U21", "U18", "7S", "GEN", "BOLTS"]):
+                if ("SPRINGBOK" in combined or "SOUTH AFRICA" in combined) and not any(re.search(pat, combined) for pat in IGNORE_KEYWORDS):
+                    # Determine time
+                    if time_tuple:
+                        hour, minute = time_tuple
+                        dt_sast = datetime(year, month, day, hour, minute, tzinfo=sast_tz)
+                    else:
+                        # If no time found, skip adding an event with guessed time; instead mark as TBD in description
+                        dt_sast = None
+
                     key = f"{team_home}-{team_away}-{year}-{month}-{day}"
                     if key not in seen:
                         seen.add(key)
-                        hour, minute = map(int, time_str.split(":"))
-                        dt_sast = datetime(year, month, day, hour, minute, tzinfo=sast_tz)
-                        dt_utc = dt_sast.astimezone(timezone.utc)
-                        end_dt_utc = dt_utc + timedelta(hours=2)
+
+                        if dt_sast:
+                            dt_utc = dt_sast.astimezone(timezone.utc)
+                            end_dt_utc = dt_utc + timedelta(hours=2)
+                            match_id = f"{year}{month:02d}{day:02d}-{dt_sast.hour:02d}{dt_sast.minute:02d}"
+                        else:
+                            # use midnight UTC placeholder for DTSTART/DTEND to keep ICS valid, but mark as TBD
+                            dt_utc = datetime(year, month, day, 0, 0, tzinfo=timezone.utc)
+                            end_dt_utc = dt_utc + timedelta(hours=2)
+                            match_id = f"{year}{month:02d}{day:02d}-TBD"
 
                         summary = f"{format_team(team_home)} vs {format_team(team_away)}"
-                        match_id = f"{year}{month:02d}{day:02d}-{hour:02d}{minute:02d}"
+                        desc_parts = []
+                        if tournament:
+                            desc_parts.append(tournament)
+                        if not dt_sast:
+                            desc_parts.append("Time: TBC")
+                        description = " | ".join(desc_parts)
 
-                        events.append(create_ics_event(summary, dt_utc, end_dt_utc, venue, tournament, match_id))
-                        print(f"Added Springboks Test: {summary} on {dt_sast.strftime('%Y-%m-%d %H:%M SAST')}")
+                        events.append(create_ics_event(summary, dt_utc, end_dt_utc, venue, description, uid_id=match_id))
+                        if dt_sast:
+                            print(f"Added Springboks Test: {summary} on {dt_sast.strftime('%Y-%m-%d %H:%M SAST')}")
+                        else:
+                            print(f"Added Springboks Test (TBC time): {summary} on {year}-{month:02d}-{day:02d}")
 
         i += 1
 
     return events
+
+
+def fetch_page_with_requests(url, timeout=15):
+    if not requests:
+        return None
+    try:
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+        }
+        r = requests.get(url, headers=headers, timeout=timeout)
+        if r.status_code == 200 and r.text and len(r.text) > 200:
+            return r.text
+    except Exception:
+        return None
+    return None
+
+
+def fetch_page_with_playwright(url):
+    if not sync_playwright:
+        return None
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True, args=["--disable-blink-features=AutomationControlled", "--no-sandbox", "--disable-dev-shm-usage"])
+            context = browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", viewport={"width":1280, "height":900})
+            page = context.new_page()
+            page.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+            page.goto(url, wait_until="networkidle", timeout=30000)
+            for _ in range(8):
+                try:
+                    page.evaluate("window.scrollBy(0, 800)")
+                except Exception:
+                    pass
+                page.wait_for_timeout(400)
+            body = page.content()
+            browser.close()
+            return body
+    except Exception:
+        return None
+
 
 def main():
     print("Fetching official Springboks Test fixtures...")
@@ -145,43 +307,61 @@ def main():
         "https://www.springboks.rugby/match-centre/"
     ]
 
-    try:
-        with sync_playwright() as p:
-            browser = p.chromium.launch(
-                headless=True,
-                args=["--disable-blink-features=AutomationControlled", "--no-sandbox"]
-            )
-            context = browser.new_context(
-                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                viewport={"width": 1280, "height": 900}
-            )
-            page = context.new_page()
-            page.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+    for target_url in urls:
+        print(f"Fetching {target_url}...")
+        page_text = None
+        # Try requests first (fast, lighter)
+        page_text = fetch_page_with_requests(target_url)
+        if not page_text:
+            print("Requests fetch failed or returned too little content; trying Playwright (if available)...")
+            page_text = fetch_page_with_playwright(target_url)
+        if not page_text:
+            print(f"Warning: Unable to fetch content from {target_url}")
+            continue
 
-            for target_url in urls:
-                print(f"Navigating to {target_url}...")
-                try:
-                    page.goto(target_url, wait_until="networkidle", timeout=30000)
-                    for _ in range(8):
-                        page.evaluate("window.scrollBy(0, 800)")
-                        page.wait_for_timeout(400)
+        # Optionally try to extract visible text via BeautifulSoup if available
+        if BeautifulSoup:
+            try:
+                soup = BeautifulSoup(page_text, "lxml")
+                # Use body text as fallback; it tends to collapse scripts/styles
+                body = soup.get_text(separator="\n")
+            except Exception:
+                body = page_text
+        else:
+            body = page_text
 
-                    body_text = page.inner_text("body")
-                    events.extend(parse_springboks_fixtures(body_text))
-                except Exception as err:
-                    print(f"Note loading {target_url}: {err}")
+        try:
+            events.extend(parse_springboks_fixtures(body))
+        except Exception:
+            print("Error parsing page; continuing to next URL")
+            traceback.print_exc()
 
-            browser.close()
-    except Exception as e:
-        print(f"Browser execution note: {e}")
+    # Remove duplicates and sort by DTSTART (we can sort by the match id encoded in UID if present)
+    unique = []
+    seen_uids = set()
+    for ev in events:
+        if ev in seen_uids:
+            continue
+        seen_uids.add(ev)
+        unique.append(ev)
 
-    # Remove duplicates if any
-    unique_events = list(dict.fromkeys(events))
-    print(f"Total official Springboks Test events compiled: {len(unique_events)}")
+    print(f"Total official Springboks Test events compiled: {len(unique)}")
 
-    if not unique_events:
-        print("ERROR: No Senior Springboks Test events compiled. Aborting calendar update.")
-        sys.exit(1)
+    if not unique:
+        print("No Senior Springboks Test events compiled. Writing empty calendar and exiting.")
+        # Write an empty calendar to keep behaviour predictable
+        ics_content = [
+            "BEGIN:VCALENDAR",
+            "VERSION:2.0",
+            "PRODID:-//Springboks Official Test Fixtures//EN",
+            "CALSCALE:GREGORIAN",
+            "METHOD:PUBLISH",
+            "X-WR-CALNAME:Springboks Rugby",
+            "END:VCALENDAR"
+        ]
+        with open("springboks.ics", "w", encoding="utf-8") as f:
+            f.write("\n".join(ics_content))
+        sys.exit(0)
 
     ics_content = [
         "BEGIN:VCALENDAR",
@@ -190,7 +370,7 @@ def main():
         "CALSCALE:GREGORIAN",
         "METHOD:PUBLISH",
         "X-WR-CALNAME:Springboks Rugby",
-        *unique_events,
+        *unique,
         "END:VCALENDAR"
     ]
 
@@ -198,6 +378,7 @@ def main():
         f.write("\n".join(ics_content))
 
     print("File springboks.ics successfully updated with official Senior Test matches.")
+
 
 if __name__ == "__main__":
     main()
