@@ -115,7 +115,7 @@ def main():
     with open("springboks.ics", "w", encoding="utf-8") as f:
         f.write("\n".join(ics_content))
 
-    print(f"Successfully generated springboks_api.ics with {len(events)} matches.")
+    print(f"springboks.ics with {len(events)} matches.")
 
 if __name__ == "__main__":
     main()
