@@ -1,17 +1,20 @@
 import requests
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
 
 API_URL = "https://cmsapi.pulselive.com/rugby/match"
 
 def create_ics_event(summary, start_dt_utc, end_dt_utc, uid_id):
-    fmt = "%Y%m%dT%H%M%SZ"
-    dtstamp = datetime.now(timezone.utc).strftime(fmt)
+    # Pure UTC format ending with 'Z' lets Apple/Google Calendar auto-convert to SAST (17:00)
+    fmt_utc = "%Y%m%dT%H%M%SZ"
+    dtstamp = datetime.now(timezone.utc).strftime(fmt_utc)
+    
     return "\n".join([
         "BEGIN:VEVENT",
         f"UID:worldrugby-{uid_id}@rugby",
         f"DTSTAMP:{dtstamp}",
-        f"DTSTART:{start_dt_utc.strftime(fmt)}",
-        f"DTEND:{end_dt_utc.strftime(fmt)}",
+        f"DTSTART:{start_dt_utc.strftime(fmt_utc)}",
+        f"DTEND:{end_dt_utc.strftime(fmt_utc)}",
         f"SUMMARY:{summary}",
         "DESCRIPTION:Source: World Rugby API",
         "STATUS:CONFIRMED",
@@ -29,7 +32,7 @@ def format_team(team_name):
     return f"{flag} {team_name}"
 
 def main():
-    print("Fetching all fixtures from World Rugby API...")
+    print("Fetching fixtures from World Rugby API...")
     events = []
     
     headers = {
@@ -39,14 +42,21 @@ def main():
         "Referer": "https://www.world.rugby/"
     }
     
+    # Range query: From today through 1 year ahead
+    now = datetime.now(timezone.utc)
+    start_date_str = now.strftime("%Y-%m-%d")
+    end_date_str = (now + timedelta(days=365)).strftime("%Y-%m-%d")
+
     page = 0
-    max_pages = 10  # Iterate up to 10 pages to capture full schedule
+    max_pages = 10
 
     while page < max_pages:
         params = {
             "client": "worldrugby",
             "sport": "rugbyu",
-            "statuses": "U",
+            "startDate": start_date_str,
+            "endDate": end_date_str,
+            "sort": "ASC",
             "page": page,
             "pageSize": 50
         }
@@ -75,25 +85,23 @@ def main():
                         if not timestamp_ms:
                             continue
 
-                        # Extract venue GMT offset provided by PulseLive
-                        gmt_offset = time_info.get("gmtOffset", 0.0)
+                        # Read direct UTC epoch
+                        start_dt_utc = datetime.fromtimestamp(timestamp_ms / 1000.0, tz=timezone.utc)
+                        end_dt_utc = start_dt_utc + timedelta(hours=2)
 
-                        # Convert millis to base UTC time and adjust for venue GMT offset
-                        raw_dt = datetime.fromtimestamp(timestamp_ms / 1000.0, tz=timezone.utc)
-                        start_dt = raw_dt - timedelta(hours=gmt_offset)
-                        end_dt = start_dt + timedelta(hours=2)
+                        # Print local SAST in logs to confirm correct 17:00 time
+                        sast_dt = start_dt_utc.astimezone(ZoneInfo("Africa/Johannesburg"))
 
                         summary = f"{format_team(team1)} vs {format_team(team2)}"
-                        match_id = match.get("matchId", f"{team1}-{team2}-{start_dt.year}")
+                        match_id = match.get("matchId", f"{team1}-{team2}-{start_dt_utc.year}")
 
-                        events.append(create_ics_event(summary, start_dt, end_dt, match_id))
-                        print(f"Added: {summary} on {start_dt.strftime('%Y-%m-%d %H:%M UTC')}")
+                        events.append(create_ics_event(summary, start_dt_utc, end_dt_utc, match_id))
+                        print(f"Added: {summary} on {sast_dt.strftime('%Y-%m-%d %H:%M SAST')}")
                         
                 except Exception as e:
                     print(f"Error parsing match: {e}")
                     continue
 
-            # Check pagination meta info
             page_info = data.get("pageInfo", {})
             num_pages = page_info.get("numPages", 1)
             page += 1
@@ -103,6 +111,9 @@ def main():
         except Exception as e:
             print(f"Failed to fetch page {page}: {e}")
             break
+
+    if not events:
+        print("No upcoming South Africa matches found in date range.")
 
     ics_content = [
         "BEGIN:VCALENDAR",
