@@ -16,7 +16,7 @@ jobs:
           
       - name: Run script
         # IMPORTANT: Replace "your_script_name.py" with your actual python file name!
-        run: python your_script_name.py
+        run: generate_ics.py
         
       - name: Commit and push changes
         run: |
